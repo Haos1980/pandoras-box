@@ -1,0 +1,8 @@
+.DS_Store
+*.log
+.env
+node_modules/
+.vscode/
+.idea/
+# never commit vault exports
+pandora-vault-*.json

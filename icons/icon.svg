@@ -1,0 +1,14 @@
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 512 512" role="img" aria-label="Pandora">
+  <defs>
+    <linearGradient id="g" x1="0" y1="0" x2="1" y2="1">
+      <stop offset="0%" stop-color="#4d8dff"/>
+      <stop offset="100%" stop-color="#a878ff"/>
+    </linearGradient>
+  </defs>
+  <rect width="512" height="512" rx="112" fill="#0b1020"/>
+  <rect x="96" y="180" width="320" height="220" rx="36" fill="url(#g)"/>
+  <rect x="96" y="140" width="320" height="70" rx="28" fill="#40dcc8"/>
+  <circle cx="256" cy="280" r="36" fill="#0b1020"/>
+  <rect x="244" y="280" width="24" height="56" rx="8" fill="#0b1020"/>
+  <path d="M180 140 V110 c0-42 33-76 76-76 s76 34 76 76 v30" fill="none" stroke="#e8eefc" stroke-width="28" stroke-linecap="round"/>
+</svg>
