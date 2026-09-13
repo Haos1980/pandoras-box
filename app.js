@@ -1,5 +1,12 @@
-(() => {
-  "use strict";
+import {
+  isFirebaseConfigured,
+  firebaseRegister,
+  firebaseSignIn,
+  firebaseSendPasswordReset,
+  firebaseSignOut,
+  mapFirebaseError
+} from "./auth.js";
+
 
   const STORAGE_KEY = "pandora.vault.v1";
   const META_KEY = "pandora.meta.v1";
@@ -37,19 +44,19 @@
       appName: "Pandora's Box",
       vaultSubtitle: "Local password vault",
       metaDescription: "Pandora's Box — encrypted local password vault",
-      authSubtitleCreate: "Create a login and password for your vault",
-      authSubtitleUnlock: "Enter your login and password to unlock",
-      authLogin: "Login",
-      authLoginPlaceholder: "Username",
+      authSubtitleCreate: "Create an account and encrypted vault",
+      authSubtitleUnlock: "Sign in with email and password",
+      authLogin: "Email",
+      authLoginPlaceholder: "you@example.com",
       authPassword: "Password",
-      authHint: "Min. 4 characters. Encrypted in your browser (AES-GCM).",
-      authCreate: "Create / Register",
-      authUnlock: "Unlock",
+      authHint: "Min. 6 characters. Vault encrypted in your browser (AES-GCM).",
+      authCreate: "Register",
+      authUnlock: "Sign in",
       authTogglePw: "Show or hide",
-      errorLoginRequired: "Enter a login.",
-      errorPasswordShort: "At least 4 characters.",
-      errorLoginMismatch: "Login does not match this vault.",
-      errorCreateFailed: "Could not create the vault.",
+      errorLoginRequired: "Enter your email.",
+      errorPasswordShort: "At least 6 characters.",
+      errorLoginMismatch: "Email does not match this vault.",
+      errorCreateFailed: "Could not create the account or vault.",
       errorBadPassword: "Wrong password or damaged vault.",
       export: "Export",
       import: "Import",
@@ -101,26 +108,50 @@
       imported: "Imported — unlock with the file password",
       importFailed: "Import failed",
       invalidFile: "Invalid file",
+      authSubtitleLogin: "Sign in with email and password",
+      authSubtitleRegister: "Create an account and encrypted vault",
+      authSubtitleForgot: "We'll email you a password reset link",
+      authEmail: "Email",
+      authEmailPlaceholder: "you@example.com",
+      authPhoneOptional: "Phone (optional)",
+      authPhonePlaceholder: "+48 …",
+      authHintForgot: "Enter the account email. No SMS — email reset only.",
+      authSubmitLogin: "Sign in",
+      authSubmitRegister: "Register",
+      authSubmitForgot: "Send reset link",
+      authLinkRegister: "Create an account",
+      authLinkLogin: "Already have an account? Sign in",
+      authLinkForgot: "Forgot password?",
+      authForgotSuccess: "If an account exists for that email, a reset link was sent.",
+      authResetVaultWarn: "Resetting your Firebase password does not decrypt an old local vault. Export the vault first, or remember the old password to unlock it.",
+      firebaseNotConfigured: "Firebase is not configured. Paste your web config into firebase-config.js (see FIREBASE-SETUP.md).",
+      errorEmailRequired: "Enter your email.",
+      errorInvalidEmail: "Enter a valid email address.",
+      errorAuthFailed: "Authentication failed. Check email and password.",
+      errorEmailInUse: "This email is already registered.",
+      errorWeakPassword: "Password is too weak (min. 6 characters).",
+      errorTooManyRequests: "Too many attempts. Try again later.",
+      errorNetwork: "Network error. Check your connection.",
       changeLanguage: "Language"
     },
     pl: {
       appName: "Puszka Pandory",
       vaultSubtitle: "Sejf haseł na urządzeniu",
       metaDescription: "Puszka Pandory — zaszyfrowany sejf haseł (PWA)",
-      authSubtitleCreate: "Ustaw login i hasło, aby utworzyć sejf",
-      authSubtitleUnlock: "Wpisz login i hasło, aby odblokować",
-      authLogin: "Login",
-      authLoginPlaceholder: "Nazwa użytkownika",
+      authSubtitleCreate: "Utwórz konto i zaszyfrowany sejf",
+      authSubtitleUnlock: "Zaloguj się e-mailem i hasłem",
+      authLogin: "E-mail",
+      authLoginPlaceholder: "ty@example.com",
       authPassword: "Hasło",
-      authHint: "Min. 4 znaki. Dane szyfrowane AES-GCM w przeglądarce.",
-      authCreate: "Utwórz / Zarejestruj",
-      authUnlock: "Odblokuj",
+      authHint: "Min. 6 znaków. Sejf szyfrowany AES-GCM w przeglądarce.",
+      authCreate: "Zarejestruj",
+      authUnlock: "Zaloguj",
       authTogglePw: "Pokaż lub ukryj",
-      errorLoginRequired: "Podaj login.",
-      errorPasswordShort: "Min. 4 znaki.",
-      errorLoginMismatch: "Login nie pasuje do tego sejfu.",
-      errorCreateFailed: "Nie udało się utworzyć sejfu.",
-      errorBadPassword: "Złe hasło lub uszkodzony sejf.",
+      errorLoginRequired: "Podaj e-mail.",
+      errorPasswordShort: "Min. 6 znaków.",
+      errorLoginMismatch: "E-mail nie pasuje do tego sejfu.",
+      errorCreateFailed: "Nie udało się utworzyć konta lub sejfu.",
+      errorBadPassword: "Błędne hasło lub uszkodzony sejf.",
       export: "Eksport",
       import: "Import",
       lock: "Zablokuj",
@@ -171,25 +202,49 @@
       imported: "Zaimportowano — odblokuj hasłem pliku",
       importFailed: "Błąd importu",
       invalidFile: "Nieprawidłowy plik",
+      authSubtitleLogin: "Zaloguj się e-mailem i hasłem",
+      authSubtitleRegister: "Utwórz konto i zaszyfrowany sejf",
+      authSubtitleForgot: "Wyślemy link do resetu hasła na e-mail",
+      authEmail: "E-mail",
+      authEmailPlaceholder: "ty@example.com",
+      authPhoneOptional: "Telefon (opcjonalnie)",
+      authPhonePlaceholder: "+48 …",
+      authHintForgot: "Podaj e-mail konta. Bez SMS — tylko reset e-mailem.",
+      authSubmitLogin: "Zaloguj",
+      authSubmitRegister: "Zarejestruj",
+      authSubmitForgot: "Wyślij link resetu",
+      authLinkRegister: "Utwórz konto",
+      authLinkLogin: "Masz już konto? Zaloguj się",
+      authLinkForgot: "Nie pamiętam hasła",
+      authForgotSuccess: "Jeśli konto istnieje, wysłaliśmy link resetu na e-mail.",
+      authResetVaultWarn: "Reset hasła Firebase nie odszyfruje starego lokalnego sejfu. Najpierw wyeksportuj sejf albo zapamiętaj stare hasło do odblokowania.",
+      firebaseNotConfigured: "Firebase nie jest skonfigurowany. Wklej konfigurację web do firebase-config.js (patrz FIREBASE-SETUP.md).",
+      errorEmailRequired: "Podaj e-mail.",
+      errorInvalidEmail: "Podaj prawidłowy adres e-mail.",
+      errorAuthFailed: "Logowanie nieudane. Sprawdź e-mail i hasło.",
+      errorEmailInUse: "Ten e-mail jest już zarejestrowany.",
+      errorWeakPassword: "Hasło za słabe (min. 6 znaków).",
+      errorTooManyRequests: "Za dużo prób. Spróbuj później.",
+      errorNetwork: "Błąd sieci. Sprawdź połączenie.",
       changeLanguage: "Język"
     },
     de: {
       appName: "Pandoras Büchse",
       vaultSubtitle: "Lokaler Passworttresor",
       metaDescription: "Pandoras Büchse — verschlüsselter lokaler Passworttresor",
-      authSubtitleCreate: "Login und Passwort festlegen, um den Tresor anzulegen",
-      authSubtitleUnlock: "Login und Passwort eingeben, um zu entsperren",
-      authLogin: "Login",
-      authLoginPlaceholder: "Benutzername",
+      authSubtitleCreate: "Konto und verschlüsselten Tresor anlegen",
+      authSubtitleUnlock: "Mit E-Mail und Passwort anmelden",
+      authLogin: "E-Mail",
+      authLoginPlaceholder: "du@example.com",
       authPassword: "Passwort",
-      authHint: "Mind. 4 Zeichen. Verschlüsselt im Browser (AES-GCM).",
-      authCreate: "Erstellen / Registrieren",
-      authUnlock: "Entsperren",
+      authHint: "Mind. 6 Zeichen. Tresor im Browser verschlüsselt (AES-GCM).",
+      authCreate: "Registrieren",
+      authUnlock: "Anmelden",
       authTogglePw: "Ein- oder ausblenden",
-      errorLoginRequired: "Bitte Login eingeben.",
-      errorPasswordShort: "Mindestens 4 Zeichen.",
-      errorLoginMismatch: "Login passt nicht zu diesem Tresor.",
-      errorCreateFailed: "Tresor konnte nicht erstellt werden.",
+      errorLoginRequired: "E-Mail eingeben.",
+      errorPasswordShort: "Mind. 6 Zeichen.",
+      errorLoginMismatch: "E-Mail stimmt nicht mit diesem Tresor überein.",
+      errorCreateFailed: "Konto oder Tresor konnte nicht erstellt werden.",
       errorBadPassword: "Falsches Passwort oder beschädigter Tresor.",
       export: "Export",
       import: "Import",
@@ -241,26 +296,50 @@
       imported: "Importiert — mit Datei-Passwort entsperren",
       importFailed: "Import fehlgeschlagen",
       invalidFile: "Ungültige Datei",
+      authSubtitleLogin: "Mit E-Mail und Passwort anmelden",
+      authSubtitleRegister: "Konto und verschlüsselten Tresor anlegen",
+      authSubtitleForgot: "Wir senden einen Reset-Link per E-Mail",
+      authEmail: "E-Mail",
+      authEmailPlaceholder: "du@example.com",
+      authPhoneOptional: "Telefon (optional)",
+      authPhonePlaceholder: "+49 …",
+      authHintForgot: "Konto-E-Mail eingeben. Kein SMS — nur E-Mail-Reset.",
+      authSubmitLogin: "Anmelden",
+      authSubmitRegister: "Registrieren",
+      authSubmitForgot: "Reset-Link senden",
+      authLinkRegister: "Konto erstellen",
+      authLinkLogin: "Bereits ein Konto? Anmelden",
+      authLinkForgot: "Passwort vergessen?",
+      authForgotSuccess: "Falls ein Konto existiert, wurde ein Reset-Link gesendet.",
+      authResetVaultWarn: "Das Zurücksetzen des Firebase-Passworts entschlüsselt keinen alten lokalen Tresor. Zuerst exportieren oder altes Passwort merken.",
+      firebaseNotConfigured: "Firebase ist nicht konfiguriert. Web-Config in firebase-config.js einfügen (siehe FIREBASE-SETUP.md).",
+      errorEmailRequired: "E-Mail eingeben.",
+      errorInvalidEmail: "Gültige E-Mail-Adresse eingeben.",
+      errorAuthFailed: "Anmeldung fehlgeschlagen. E-Mail und Passwort prüfen.",
+      errorEmailInUse: "Diese E-Mail ist bereits registriert.",
+      errorWeakPassword: "Passwort zu schwach (mind. 6 Zeichen).",
+      errorTooManyRequests: "Zu viele Versuche. Später erneut versuchen.",
+      errorNetwork: "Netzwerkfehler. Verbindung prüfen.",
       changeLanguage: "Sprache"
     },
     ru: {
       appName: "Ящик Пандоры",
       vaultSubtitle: "Локальный сейф паролей",
       metaDescription: "Ящик Пандоры — зашифрованный локальный сейф паролей",
-      authSubtitleCreate: "Задайте логин и пароль, чтобы создать сейф",
-      authSubtitleUnlock: "Введите логин и пароль, чтобы открыть",
-      authLogin: "Логин",
-      authLoginPlaceholder: "Имя пользователя",
+      authSubtitleCreate: "Создайте аккаунт и зашифрованный сейф",
+      authSubtitleUnlock: "Войдите по email и паролю",
+      authLogin: "Email",
+      authLoginPlaceholder: "you@example.com",
       authPassword: "Пароль",
-      authHint: "Не менее 4 символов. Шифрование AES-GCM в браузере.",
-      authCreate: "Создать / Регистрация",
-      authUnlock: "Открыть",
+      authHint: "Не менее 6 символов. Сейф шифруется AES-GCM в браузере.",
+      authCreate: "Регистрация",
+      authUnlock: "Войти",
       authTogglePw: "Показать или скрыть",
-      errorLoginRequired: "Введите логин.",
-      errorPasswordShort: "Не менее 4 символов.",
-      errorLoginMismatch: "Логин не подходит к этому сейфу.",
-      errorCreateFailed: "Не удалось создать сейф.",
-      errorBadPassword: "Неверный пароль или сейф повреждён.",
+      errorLoginRequired: "Введите email.",
+      errorPasswordShort: "Не менее 6 символов.",
+      errorLoginMismatch: "Email не совпадает с этим сейфом.",
+      errorCreateFailed: "Не удалось создать аккаунт или сейф.",
+      errorBadPassword: "Неверный пароль или повреждённый сейф.",
       export: "Экспорт",
       import: "Импорт",
       lock: "Заблокировать",
@@ -311,26 +390,50 @@
       imported: "Импортировано — откройте паролем файла",
       importFailed: "Ошибка импорта",
       invalidFile: "Неверный файл",
+      authSubtitleLogin: "Войдите по email и паролю",
+      authSubtitleRegister: "Создайте аккаунт и зашифрованный сейф",
+      authSubtitleForgot: "Мы отправим ссылку для сброса пароля на email",
+      authEmail: "Email",
+      authEmailPlaceholder: "you@example.com",
+      authPhoneOptional: "Телефон (необязательно)",
+      authPhonePlaceholder: "+7 …",
+      authHintForgot: "Введите email аккаунта. Без SMS — только сброс по email.",
+      authSubmitLogin: "Войти",
+      authSubmitRegister: "Регистрация",
+      authSubmitForgot: "Отправить ссылку",
+      authLinkRegister: "Создать аккаунт",
+      authLinkLogin: "Уже есть аккаунт? Войти",
+      authLinkForgot: "Забыли пароль?",
+      authForgotSuccess: "Если аккаунт существует, ссылка для сброса отправлена.",
+      authResetVaultWarn: "Сброс пароля Firebase не расшифрует старый локальный сейф. Сначала экспортируйте сейф или запомните старый пароль.",
+      firebaseNotConfigured: "Firebase не настроен. Вставьте web-конфиг в firebase-config.js (см. FIREBASE-SETUP.md).",
+      errorEmailRequired: "Введите email.",
+      errorInvalidEmail: "Введите корректный email.",
+      errorAuthFailed: "Ошибка входа. Проверьте email и пароль.",
+      errorEmailInUse: "Этот email уже зарегистрирован.",
+      errorWeakPassword: "Слишком слабый пароль (мин. 6 символов).",
+      errorTooManyRequests: "Слишком много попыток. Попробуйте позже.",
+      errorNetwork: "Ошибка сети. Проверьте соединение.",
       changeLanguage: "Язык"
     },
     fr: {
       appName: "Boîte de Pandore",
       vaultSubtitle: "Coffre-fort local",
       metaDescription: "Boîte de Pandore — coffre-fort de mots de passe chiffré",
-      authSubtitleCreate: "Créez un identifiant et un mot de passe pour le coffre",
-      authSubtitleUnlock: "Entrez identifiant et mot de passe pour déverrouiller",
-      authLogin: "Identifiant",
-      authLoginPlaceholder: "Nom d'utilisateur",
+      authSubtitleCreate: "Créez un compte et un coffre chiffré",
+      authSubtitleUnlock: "Connectez-vous avec e-mail et mot de passe",
+      authLogin: "E-mail",
+      authLoginPlaceholder: "vous@example.com",
       authPassword: "Mot de passe",
-      authHint: "Min. 4 caractères. Chiffré dans le navigateur (AES-GCM).",
-      authCreate: "Créer / S'inscrire",
-      authUnlock: "Déverrouiller",
+      authHint: "Min. 6 caractères. Coffre chiffré dans le navigateur (AES-GCM).",
+      authCreate: "S'inscrire",
+      authUnlock: "Se connecter",
       authTogglePw: "Afficher ou masquer",
-      errorLoginRequired: "Saisissez un identifiant.",
-      errorPasswordShort: "Au moins 4 caractères.",
-      errorLoginMismatch: "L'identifiant ne correspond pas à ce coffre.",
-      errorCreateFailed: "Impossible de créer le coffre.",
-      errorBadPassword: "Mauvais mot de passe ou coffre endommagé.",
+      errorLoginRequired: "Saisissez votre e-mail.",
+      errorPasswordShort: "Min. 6 caractères.",
+      errorLoginMismatch: "L'e-mail ne correspond pas à ce coffre.",
+      errorCreateFailed: "Impossible de créer le compte ou le coffre.",
+      errorBadPassword: "Mot de passe incorrect ou coffre endommagé.",
       export: "Exporter",
       import: "Importer",
       lock: "Verrouiller",
@@ -381,25 +484,49 @@
       imported: "Importé — déverrouillez avec le mot de passe du fichier",
       importFailed: "Échec de l'import",
       invalidFile: "Fichier invalide",
+      authSubtitleLogin: "Connectez-vous avec e-mail et mot de passe",
+      authSubtitleRegister: "Créez un compte et un coffre chiffré",
+      authSubtitleForgot: "Nous enverrons un lien de réinitialisation par e-mail",
+      authEmail: "E-mail",
+      authEmailPlaceholder: "vous@example.com",
+      authPhoneOptional: "Téléphone (facultatif)",
+      authPhonePlaceholder: "+33 …",
+      authHintForgot: "Saisissez l'e-mail du compte. Pas de SMS — reset e-mail uniquement.",
+      authSubmitLogin: "Se connecter",
+      authSubmitRegister: "S'inscrire",
+      authSubmitForgot: "Envoyer le lien",
+      authLinkRegister: "Créer un compte",
+      authLinkLogin: "Déjà un compte ? Se connecter",
+      authLinkForgot: "Mot de passe oublié ?",
+      authForgotSuccess: "Si un compte existe, un lien de réinitialisation a été envoyé.",
+      authResetVaultWarn: "Réinitialiser le mot de passe Firebase ne déchiffre pas un ancien coffre local. Exportez d'abord le coffre ou retenez l'ancien mot de passe.",
+      firebaseNotConfigured: "Firebase n'est pas configuré. Collez la config web dans firebase-config.js (voir FIREBASE-SETUP.md).",
+      errorEmailRequired: "Saisissez votre e-mail.",
+      errorInvalidEmail: "Saisissez une adresse e-mail valide.",
+      errorAuthFailed: "Échec de connexion. Vérifiez e-mail et mot de passe.",
+      errorEmailInUse: "Cet e-mail est déjà enregistré.",
+      errorWeakPassword: "Mot de passe trop faible (min. 6 caractères).",
+      errorTooManyRequests: "Trop de tentatives. Réessayez plus tard.",
+      errorNetwork: "Erreur réseau. Vérifiez la connexion.",
       changeLanguage: "Langue"
     },
     it: {
       appName: "Scatola di Pandora",
       vaultSubtitle: "Cassaforte locale",
       metaDescription: "Scatola di Pandora — cassaforte password crittografata",
-      authSubtitleCreate: "Crea login e password per la cassaforte",
-      authSubtitleUnlock: "Inserisci login e password per sbloccare",
-      authLogin: "Login",
-      authLoginPlaceholder: "Nome utente",
+      authSubtitleCreate: "Crea un account e una cassaforte crittografata",
+      authSubtitleUnlock: "Accedi con email e password",
+      authLogin: "Email",
+      authLoginPlaceholder: "tu@example.com",
       authPassword: "Password",
-      authHint: "Min. 4 caratteri. Crittografia AES-GCM nel browser.",
-      authCreate: "Crea / Registrati",
-      authUnlock: "Sblocca",
+      authHint: "Min. 6 caratteri. Cassaforte crittografata nel browser (AES-GCM).",
+      authCreate: "Registrati",
+      authUnlock: "Accedi",
       authTogglePw: "Mostra o nascondi",
-      errorLoginRequired: "Inserisci un login.",
-      errorPasswordShort: "Almeno 4 caratteri.",
-      errorLoginMismatch: "Il login non corrisponde a questa cassaforte.",
-      errorCreateFailed: "Impossibile creare la cassaforte.",
+      errorLoginRequired: "Inserisci l'email.",
+      errorPasswordShort: "Min. 6 caratteri.",
+      errorLoginMismatch: "L'email non corrisponde a questa cassaforte.",
+      errorCreateFailed: "Impossibile creare l'account o la cassaforte.",
       errorBadPassword: "Password errata o cassaforte danneggiata.",
       export: "Esporta",
       import: "Importa",
@@ -451,26 +578,50 @@
       imported: "Importato — sblocca con la password del file",
       importFailed: "Importazione non riuscita",
       invalidFile: "File non valido",
+      authSubtitleLogin: "Accedi con email e password",
+      authSubtitleRegister: "Crea un account e una cassaforte crittografata",
+      authSubtitleForgot: "Ti invieremo un link di reset via email",
+      authEmail: "Email",
+      authEmailPlaceholder: "tu@example.com",
+      authPhoneOptional: "Telefono (opzionale)",
+      authPhonePlaceholder: "+39 …",
+      authHintForgot: "Inserisci l'email dell'account. Niente SMS — solo reset email.",
+      authSubmitLogin: "Accedi",
+      authSubmitRegister: "Registrati",
+      authSubmitForgot: "Invia link di reset",
+      authLinkRegister: "Crea un account",
+      authLinkLogin: "Hai già un account? Accedi",
+      authLinkForgot: "Password dimenticata?",
+      authForgotSuccess: "Se l'account esiste, è stato inviato un link di reset.",
+      authResetVaultWarn: "Reimpostare la password Firebase non decifra una vecchia cassaforte locale. Esporta prima la cassaforte o ricorda la vecchia password.",
+      firebaseNotConfigured: "Firebase non è configurato. Incolla la config web in firebase-config.js (vedi FIREBASE-SETUP.md).",
+      errorEmailRequired: "Inserisci l'email.",
+      errorInvalidEmail: "Inserisci un indirizzo email valido.",
+      errorAuthFailed: "Accesso non riuscito. Controlla email e password.",
+      errorEmailInUse: "Questa email è già registrata.",
+      errorWeakPassword: "Password troppo debole (min. 6 caratteri).",
+      errorTooManyRequests: "Troppi tentativi. Riprova più tardi.",
+      errorNetwork: "Errore di rete. Controlla la connessione.",
       changeLanguage: "Lingua"
     },
     es: {
       appName: "Caja de Pandora",
       vaultSubtitle: "Caja fuerte local",
       metaDescription: "Caja de Pandora — caja fuerte de contraseñas cifrada",
-      authSubtitleCreate: "Crea un usuario y una contraseña para la caja",
-      authSubtitleUnlock: "Introduce usuario y contraseña para desbloquear",
-      authLogin: "Usuario",
-      authLoginPlaceholder: "Nombre de usuario",
+      authSubtitleCreate: "Crea una cuenta y una caja fuerte cifrada",
+      authSubtitleUnlock: "Inicia sesión con correo y contraseña",
+      authLogin: "Correo",
+      authLoginPlaceholder: "tu@example.com",
       authPassword: "Contraseña",
-      authHint: "Mín. 4 caracteres. Cifrado en el navegador (AES-GCM).",
-      authCreate: "Crear / Registrarse",
-      authUnlock: "Desbloquear",
+      authHint: "Mín. 6 caracteres. Caja fuerte cifrada en el navegador (AES-GCM).",
+      authCreate: "Registrarse",
+      authUnlock: "Iniciar sesión",
       authTogglePw: "Mostrar u ocultar",
-      errorLoginRequired: "Introduce un usuario.",
-      errorPasswordShort: "Al menos 4 caracteres.",
-      errorLoginMismatch: "El usuario no coincide con esta caja.",
-      errorCreateFailed: "No se pudo crear la caja.",
-      errorBadPassword: "Contraseña incorrecta o caja dañada.",
+      errorLoginRequired: "Introduce tu correo.",
+      errorPasswordShort: "Mín. 6 caracteres.",
+      errorLoginMismatch: "El correo no coincide con esta caja fuerte.",
+      errorCreateFailed: "No se pudo crear la cuenta o la caja fuerte.",
+      errorBadPassword: "Contraseña incorrecta o caja fuerte dañada.",
       export: "Exportar",
       import: "Importar",
       lock: "Bloquear",
@@ -521,25 +672,49 @@
       imported: "Importado — desbloquea con la contraseña del archivo",
       importFailed: "Error al importar",
       invalidFile: "Archivo no válido",
+      authSubtitleLogin: "Inicia sesión con correo y contraseña",
+      authSubtitleRegister: "Crea una cuenta y una caja fuerte cifrada",
+      authSubtitleForgot: "Te enviaremos un enlace de restablecimiento por correo",
+      authEmail: "Correo",
+      authEmailPlaceholder: "tu@example.com",
+      authPhoneOptional: "Teléfono (opcional)",
+      authPhonePlaceholder: "+34 …",
+      authHintForgot: "Introduce el correo de la cuenta. Sin SMS — solo restablecimiento por correo.",
+      authSubmitLogin: "Iniciar sesión",
+      authSubmitRegister: "Registrarse",
+      authSubmitForgot: "Enviar enlace",
+      authLinkRegister: "Crear una cuenta",
+      authLinkLogin: "¿Ya tienes cuenta? Inicia sesión",
+      authLinkForgot: "¿Olvidaste la contraseña?",
+      authForgotSuccess: "Si la cuenta existe, se envió un enlace de restablecimiento.",
+      authResetVaultWarn: "Restablecer la contraseña de Firebase no descifra una caja fuerte local antigua. Exporta primero o recuerda la contraseña antigua.",
+      firebaseNotConfigured: "Firebase no está configurado. Pega la config web en firebase-config.js (ver FIREBASE-SETUP.md).",
+      errorEmailRequired: "Introduce tu correo.",
+      errorInvalidEmail: "Introduce un correo válido.",
+      errorAuthFailed: "Error de autenticación. Revisa correo y contraseña.",
+      errorEmailInUse: "Este correo ya está registrado.",
+      errorWeakPassword: "Contraseña demasiado débil (mín. 6 caracteres).",
+      errorTooManyRequests: "Demasiados intentos. Inténtalo más tarde.",
+      errorNetwork: "Error de red. Comprueba la conexión.",
       changeLanguage: "Idioma"
     },
     zh: {
       appName: "潘多拉魔盒",
       vaultSubtitle: "本地密码库",
       metaDescription: "潘多拉魔盒 — 加密的本地密码库",
-      authSubtitleCreate: "设置登录名和密码以创建保险库",
-      authSubtitleUnlock: "输入登录名和密码以解锁",
-      authLogin: "登录名",
-      authLoginPlaceholder: "用户名",
+      authSubtitleCreate: "创建账户和加密保险库",
+      authSubtitleUnlock: "使用邮箱和密码登录",
+      authLogin: "邮箱",
+      authLoginPlaceholder: "you@example.com",
       authPassword: "密码",
-      authHint: "至少 4 个字符。浏览器内 AES-GCM 加密。",
-      authCreate: "创建 / 注册",
-      authUnlock: "解锁",
+      authHint: "至少 6 个字符。保险库在浏览器中加密（AES-GCM）。",
+      authCreate: "注册",
+      authUnlock: "登录",
       authTogglePw: "显示或隐藏",
-      errorLoginRequired: "请输入登录名。",
-      errorPasswordShort: "至少 4 个字符。",
-      errorLoginMismatch: "登录名与此保险库不匹配。",
-      errorCreateFailed: "无法创建保险库。",
+      errorLoginRequired: "请输入邮箱。",
+      errorPasswordShort: "至少 6 个字符。",
+      errorLoginMismatch: "邮箱与此保险库不匹配。",
+      errorCreateFailed: "无法创建账户或保险库。",
       errorBadPassword: "密码错误或保险库已损坏。",
       export: "导出",
       import: "导入",
@@ -591,26 +766,50 @@
       imported: "已导入 — 请用文件密码解锁",
       importFailed: "导入失败",
       invalidFile: "文件无效",
+      authSubtitleLogin: "使用邮箱和密码登录",
+      authSubtitleRegister: "创建账户和加密保险库",
+      authSubtitleForgot: "我们将通过邮件发送密码重置链接",
+      authEmail: "邮箱",
+      authEmailPlaceholder: "you@example.com",
+      authPhoneOptional: "电话（可选）",
+      authPhonePlaceholder: "+86 …",
+      authHintForgot: "输入账户邮箱。无短信 — 仅邮件重置。",
+      authSubmitLogin: "登录",
+      authSubmitRegister: "注册",
+      authSubmitForgot: "发送重置链接",
+      authLinkRegister: "创建账户",
+      authLinkLogin: "已有账户？登录",
+      authLinkForgot: "忘记密码？",
+      authForgotSuccess: "如果该邮箱有账户，重置链接已发送。",
+      authResetVaultWarn: "重置 Firebase 密码无法解密旧的本地保险库。请先导出保险库，或记住旧密码以解锁。",
+      firebaseNotConfigured: "未配置 Firebase。请将 web 配置粘贴到 firebase-config.js（见 FIREBASE-SETUP.md）。",
+      errorEmailRequired: "请输入邮箱。",
+      errorInvalidEmail: "请输入有效的邮箱地址。",
+      errorAuthFailed: "认证失败。请检查邮箱和密码。",
+      errorEmailInUse: "该邮箱已注册。",
+      errorWeakPassword: "密码太弱（至少 6 个字符）。",
+      errorTooManyRequests: "尝试次数过多。请稍后再试。",
+      errorNetwork: "网络错误。请检查连接。",
       changeLanguage: "语言"
     },
     ja: {
       appName: "パンドラの箱",
       vaultSubtitle: "ローカルパスワード保管庫",
       metaDescription: "パンドラの箱 — 暗号化されたローカルパスワード保管庫",
-      authSubtitleCreate: "ログイン名とパスワードを設定して保管庫を作成",
-      authSubtitleUnlock: "ログイン名とパスワードを入力して解除",
-      authLogin: "ログイン",
-      authLoginPlaceholder: "ユーザー名",
+      authSubtitleCreate: "アカウントと暗号化保管庫を作成",
+      authSubtitleUnlock: "メールとパスワードでサインイン",
+      authLogin: "メール",
+      authLoginPlaceholder: "you@example.com",
       authPassword: "パスワード",
-      authHint: "4文字以上。ブラウザ内で AES-GCM 暗号化。",
-      authCreate: "作成 / 登録",
-      authUnlock: "ロック解除",
+      authHint: "最低6文字。保管庫はブラウザで暗号化（AES-GCM）。",
+      authCreate: "登録",
+      authUnlock: "サインイン",
       authTogglePw: "表示 / 非表示",
-      errorLoginRequired: "ログイン名を入力してください。",
-      errorPasswordShort: "4文字以上にしてください。",
-      errorLoginMismatch: "ログイン名がこの保管庫と一致しません。",
-      errorCreateFailed: "保管庫を作成できませんでした。",
-      errorBadPassword: "パスワードが違うか、保管庫が破損しています。",
+      errorLoginRequired: "メールを入力してください。",
+      errorPasswordShort: "最低6文字。",
+      errorLoginMismatch: "メールがこの保管庫と一致しません。",
+      errorCreateFailed: "アカウントまたは保管庫を作成できませんでした。",
+      errorBadPassword: "パスワードが違うか保管庫が破損しています。",
       export: "エクスポート",
       import: "インポート",
       lock: "ロック",
@@ -661,6 +860,30 @@
       imported: "インポート済み — ファイルのパスワードで解除",
       importFailed: "インポートに失敗しました",
       invalidFile: "無効なファイル",
+      authSubtitleLogin: "メールとパスワードでサインイン",
+      authSubtitleRegister: "アカウントと暗号化保管庫を作成",
+      authSubtitleForgot: "パスワードリセットリンクをメールで送信します",
+      authEmail: "メール",
+      authEmailPlaceholder: "you@example.com",
+      authPhoneOptional: "電話（任意）",
+      authPhonePlaceholder: "+81 …",
+      authHintForgot: "アカウントのメールを入力。SMSなし — メールリセットのみ。",
+      authSubmitLogin: "サインイン",
+      authSubmitRegister: "登録",
+      authSubmitForgot: "リセットリンクを送信",
+      authLinkRegister: "アカウントを作成",
+      authLinkLogin: "すでにアカウントがありますか？サインイン",
+      authLinkForgot: "パスワードをお忘れですか？",
+      authForgotSuccess: "アカウントがある場合、リセットリンクを送信しました。",
+      authResetVaultWarn: "Firebaseパスワードのリセットでは古いローカル保管庫は復号できません。先にエクスポートするか、古いパスワードを覚えておいてください。",
+      firebaseNotConfigured: "Firebaseが未設定です。web設定をfirebase-config.jsに貼り付けてください（FIREBASE-SETUP.md参照）。",
+      errorEmailRequired: "メールを入力してください。",
+      errorInvalidEmail: "有効なメールアドレスを入力してください。",
+      errorAuthFailed: "認証に失敗しました。メールとパスワードを確認してください。",
+      errorEmailInUse: "このメールは既に登録されています。",
+      errorWeakPassword: "パスワードが弱すぎます（最低6文字）。",
+      errorTooManyRequests: "試行回数が多すぎます。後でもう一度お試しください。",
+      errorNetwork: "ネットワークエラー。接続を確認してください。",
       changeLanguage: "言語"
     }
   };
@@ -672,6 +895,8 @@
   let editingId = null;
   let lang = "en";
   let pendingLogin = "";
+  /** @type {"login"|"register"|"forgot"} */
+  let authMode = "login";
 
   /**
    * @typedef {Object} Entry
@@ -696,9 +921,19 @@
   const lockForm = $("#lock-form");
   const loginEl = $("#login");
   const passphraseEl = $("#passphrase");
+  const authPhoneEl = $("#auth-phone");
+  const fieldPhone = $("#field-phone");
+  const fieldPassword = $("#field-password");
   const lockSubtitle = $("#lock-subtitle");
   const lockSubmit = $("#lock-submit");
   const lockError = $("#lock-error");
+  const lockSuccess = $("#lock-success");
+  const lockHint = $("#lock-hint");
+  const resetWarn = $("#reset-warn");
+  const firebaseBanner = $("#firebase-banner");
+  const linkToRegister = $("#link-to-register");
+  const linkToForgot = $("#link-to-forgot");
+  const linkToLogin = $("#link-to-login");
   const searchEl = $("#search");
   const listEl = $("#entry-list");
   const emptyEl = $("#empty-state");
@@ -887,12 +1122,66 @@
     if (vaultScreen.classList.contains("active")) renderList();
   }
 
+  function isValidEmail(email) {
+    return /^[^\s@]+@[^\s@]+\.[^\s@]+$/.test(email);
+  }
+
+  function setAuthMode(mode) {
+    authMode = mode;
+    lockError.hidden = true;
+    if (lockSuccess) {
+      lockSuccess.hidden = true;
+      lockSuccess.textContent = "";
+    }
+    refreshLockCopy();
+  }
+
   function refreshLockCopy() {
-    const setup = !hasVault();
-    lockSubtitle.textContent = setup ? t("authSubtitleCreate") : t("authSubtitleUnlock");
-    lockSubmit.textContent = setup ? t("authCreate") : t("authUnlock");
-    passphraseEl.autocomplete = setup ? "new-password" : "current-password";
-    loginEl.required = setup || !!storedLogin();
+    const configured = isFirebaseConfigured();
+    if (firebaseBanner) {
+      if (!configured) {
+        firebaseBanner.textContent = t("firebaseNotConfigured");
+        firebaseBanner.hidden = false;
+      } else {
+        firebaseBanner.hidden = true;
+      }
+    }
+
+    const isForgot = authMode === "forgot";
+    const isRegister = authMode === "register";
+
+    if (fieldPhone) fieldPhone.hidden = !isRegister;
+    if (fieldPassword) fieldPassword.hidden = isForgot;
+    if (resetWarn) resetWarn.hidden = !isForgot;
+
+    if (isForgot) {
+      lockSubtitle.textContent = t("authSubtitleForgot");
+      lockSubmit.textContent = t("authSubmitForgot");
+      if (lockHint) lockHint.textContent = t("authHintForgot");
+      passphraseEl.required = false;
+      passphraseEl.value = "";
+    } else if (isRegister) {
+      lockSubtitle.textContent = t("authSubtitleRegister");
+      lockSubmit.textContent = t("authSubmitRegister");
+      if (lockHint) lockHint.textContent = t("authHint");
+      passphraseEl.required = true;
+      passphraseEl.autocomplete = "new-password";
+      passphraseEl.minLength = 6;
+    } else {
+      lockSubtitle.textContent = t("authSubtitleLogin");
+      lockSubmit.textContent = t("authSubmitLogin");
+      if (lockHint) lockHint.textContent = t("authHint");
+      passphraseEl.required = true;
+      passphraseEl.autocomplete = "current-password";
+      passphraseEl.minLength = 6;
+    }
+
+    loginEl.required = true;
+    loginEl.type = "email";
+
+    if (linkToRegister) linkToRegister.hidden = authMode !== "login";
+    if (linkToForgot) linkToForgot.hidden = authMode !== "login";
+    if (linkToLogin) linkToLogin.hidden = authMode === "login";
   }
 
   function updateLangChips() {
@@ -935,11 +1224,19 @@
     showScreen("lock");
     closeModal();
     lockError.hidden = true;
+    if (lockSuccess) {
+      lockSuccess.hidden = true;
+      lockSuccess.textContent = "";
+    }
     lockForm.reset();
+    authMode = "login";
     const existing = storedLogin();
     if (existing) loginEl.value = existing;
+    const phone = (getMeta().phone || "").toString();
+    if (authPhoneEl && phone) authPhoneEl.value = phone;
     refreshLockCopy();
-    setTimeout(() => (existing ? passphraseEl : loginEl).focus(), 50);
+    firebaseSignOut().catch(() => {});
+    setTimeout(() => (existing && authMode === "login" ? passphraseEl : loginEl).focus(), 50);
   }
 
   function showVault() {
@@ -1146,49 +1443,119 @@
     });
   });
 
+  function showLockError(msg) {
+    lockError.textContent = msg;
+    lockError.hidden = false;
+    if (lockSuccess) lockSuccess.hidden = true;
+  }
+
+  function showLockSuccess(msg) {
+    if (lockSuccess) {
+      lockSuccess.textContent = msg;
+      lockSuccess.hidden = false;
+    }
+    lockError.hidden = true;
+  }
+
   lockForm.addEventListener("submit", async (ev) => {
     ev.preventDefault();
     lockError.hidden = true;
+    if (lockSuccess) {
+      lockSuccess.hidden = true;
+      lockSuccess.textContent = "";
+    }
+
+    const email = loginEl.value.trim();
     const pw = passphraseEl.value;
-    const login = loginEl.value.trim();
-    const setup = !hasVault();
-    const expected = storedLogin();
+    const phone = (authPhoneEl && authPhoneEl.value.trim()) || "";
+
+    if (!email) {
+      showLockError(t("errorEmailRequired"));
+      return;
+    }
+    if (!isValidEmail(email)) {
+      showLockError(t("errorInvalidEmail"));
+      return;
+    }
+
+    if (!isFirebaseConfigured()) {
+      showLockError(t("firebaseNotConfigured"));
+      return;
+    }
+
     try {
-      if (setup) {
-        if (!login) {
-          lockError.textContent = t("errorLoginRequired");
-          lockError.hidden = false;
+      lockSubmit.disabled = true;
+
+      if (authMode === "forgot") {
+        await firebaseSendPasswordReset(email);
+        showLockSuccess(t("authForgotSuccess"));
+        return;
+      }
+
+      if (pw.length < 6) {
+        showLockError(t("errorPasswordShort"));
+        return;
+      }
+
+      if (authMode === "register") {
+        await firebaseRegister(email, pw);
+        if (hasVault()) {
+          try {
+            await loadVault(pw);
+            pendingLogin = email;
+            setMeta({ login: email, ...(phone ? { phone } : {}) });
+          } catch {
+            setMeta({ login: email, ...(phone ? { phone } : {}) });
+            showLockError(t("errorBadPassword"));
+            return;
+          }
+        } else {
+          await createVault(pw, email);
+          if (phone) setMeta({ phone });
+        }
+        showVault();
+        return;
+      }
+
+      // login
+      await firebaseSignIn(email, pw);
+      if (hasVault()) {
+        try {
+          await loadVault(pw);
+        } catch {
+          showLockError(t("errorBadPassword"));
           return;
         }
-        if (pw.length < 4) {
-          lockError.textContent = t("errorPasswordShort");
-          lockError.hidden = false;
-          return;
-        }
-        lockSubmit.disabled = true;
-        await createVault(pw, login);
+        pendingLogin = email;
+        setMeta({ login: email, ...(phone ? { phone } : {}) });
       } else {
-        if (expected && !loginsMatch(login, expected)) {
-          lockError.textContent = t("errorLoginMismatch");
-          lockError.hidden = false;
-          return;
-        }
-        lockSubmit.disabled = true;
-        await loadVault(pw);
-        if (!expected && login) {
-          pendingLogin = login;
-          setMeta({ login });
-        }
+        await createVault(pw, email);
+        if (phone) setMeta({ phone });
       }
       showVault();
-    } catch {
-      lockError.textContent = setup ? t("errorCreateFailed") : t("errorBadPassword");
-      lockError.hidden = false;
+    } catch (err) {
+      const code = (err && (err.code || err.message)) || "";
+      const key = mapFirebaseError(code);
+      if (authMode === "register" && key === "errorAuthFailed") {
+        showLockError(t("errorCreateFailed"));
+      } else {
+        showLockError(t(key));
+      }
     } finally {
       lockSubmit.disabled = false;
-      passphraseEl.value = "";
+      if (authMode !== "forgot") passphraseEl.value = "";
     }
   });
+
+  if (linkToRegister) {
+    linkToRegister.addEventListener("click", () => setAuthMode("register"));
+  }
+  if (linkToForgot) {
+    linkToForgot.addEventListener("click", () => setAuthMode("forgot"));
+  }
+  if (linkToLogin) {
+    linkToLogin.addEventListener("click", () => setAuthMode("login"));
+  }
 
   $("#btn-lock").addEventListener("click", () => {
     showLock();
@@ -1321,4 +1688,3 @@
     applyI18n();
     showLang();
   }
-})();

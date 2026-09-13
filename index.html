@@ -33,21 +33,33 @@
         <div class="lock-logo" aria-hidden="true">📦</div>
         <h1 data-i18n="appName">Pandora's Box</h1>
         <p class="subtitle" id="lock-subtitle"></p>
+        <p class="firebase-banner" id="firebase-banner" hidden role="status"></p>
         <form id="lock-form" autocomplete="off">
-          <label class="field">
-            <span data-i18n="authLogin">Login</span>
-            <input type="text" id="login" maxlength="80" autocomplete="username" autocapitalize="none" spellcheck="false" data-i18n-placeholder="authLoginPlaceholder" />
+          <label class="field" id="field-email">
+            <span data-i18n="authEmail">Email</span>
+            <input type="email" id="login" maxlength="200" autocomplete="username" autocapitalize="none" spellcheck="false" inputmode="email" data-i18n-placeholder="authEmailPlaceholder" />
           </label>
-          <label class="field">
+          <label class="field" id="field-phone" hidden>
+            <span data-i18n="authPhoneOptional">Phone (optional)</span>
+            <input type="tel" id="auth-phone" maxlength="40" autocomplete="tel" data-i18n-placeholder="authPhonePlaceholder" />
+          </label>
+          <label class="field" id="field-password">
             <span data-i18n="authPassword">Password</span>
             <div class="pw-row">
-              <input type="password" id="passphrase" required minlength="4" autocomplete="current-password" placeholder="••••••••" />
+              <input type="password" id="passphrase" minlength="6" autocomplete="current-password" placeholder="••••••••" />
               <button type="button" class="icon-btn" data-toggle-pw="#passphrase" data-i18n-aria="authTogglePw">👁</button>
             </div>
           </label>
           <p class="hint" id="lock-hint" data-i18n="authHint"></p>
+          <p class="warn" id="reset-warn" hidden data-i18n="authResetVaultWarn"></p>
           <p class="error" id="lock-error" hidden></p>
+          <p class="success" id="lock-success" hidden></p>
           <button type="submit" class="btn primary" id="lock-submit"></button>
+          <nav class="auth-links" id="auth-links" aria-label="Auth modes">
+            <button type="button" class="link-btn" id="link-to-register" data-i18n="authLinkRegister"></button>
+            <button type="button" class="link-btn" id="link-to-forgot" data-i18n="authLinkForgot"></button>
+            <button type="button" class="link-btn" id="link-to-login" data-i18n="authLinkLogin" hidden></button>
+          </nav>
         </form>
       </div>
     </section>
@@ -142,6 +154,6 @@
     <input type="file" id="import-file" accept="application/json,.json" hidden />
     <div id="toast" class="toast" hidden role="status"></div>
   </div>
-  <script src="app.js"></script>
+  <script type="module" src="app.js"></script>
 </body>
 </html>

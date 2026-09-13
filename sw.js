@@ -1,10 +1,12 @@
 /* Pandora's Box — minimal offline cache */
-const CACHE = "pandora-v2";
+const CACHE = "pandora-v3";
 const ASSETS = [
   "./",
   "./index.html",
   "./style.css",
   "./app.js",
+  "./auth.js",
+  "./firebase-config.js",
   "./manifest.json",
   "./icons/icon.svg",
   "./icons/icon-192.png",
