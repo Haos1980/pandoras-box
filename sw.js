@@ -1,5 +1,5 @@
 /* Pandora's Box — minimal offline cache */
-const CACHE = "pandora-v3";
+const CACHE = "pandora-v4";
 const ASSETS = [
   "./",
   "./index.html",

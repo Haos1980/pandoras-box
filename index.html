@@ -61,6 +61,23 @@
             <button type="button" class="link-btn" id="link-to-login" data-i18n="authLinkLogin" hidden></button>
           </nav>
         </form>
+        <div id="rekey-panel" class="rekey-panel" hidden>
+          <p class="rekey-explain" data-i18n="authRekeyExplain"></p>
+          <label class="field" id="field-rekey-old">
+            <span data-i18n="authOldVaultPassword">Previous vault password</span>
+            <div class="pw-row">
+              <input type="password" id="rekey-old-pass" minlength="6" autocomplete="off" placeholder="••••••••" />
+              <button type="button" class="icon-btn" data-toggle-pw="#rekey-old-pass" data-i18n-aria="authTogglePw">👁</button>
+            </div>
+          </label>
+          <p class="hint" id="rekey-hint" data-i18n="authRekeyHint"></p>
+          <p class="error" id="rekey-error" hidden></p>
+          <button type="button" class="btn primary" id="rekey-submit" data-i18n="authRekeySubmit"></button>
+          <button type="button" class="btn danger ghost" id="rekey-wipe" data-i18n="authResetLocalVault"></button>
+          <nav class="auth-links" aria-label="Rekey actions">
+            <button type="button" class="link-btn" id="rekey-cancel" data-i18n="authRekeyCancel"></button>
+          </nav>
+        </div>
       </div>
     </section>
 

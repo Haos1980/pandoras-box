@@ -228,7 +228,14 @@ textarea { resize: vertical; min-height: 72px; }
 }
 .btn.ghost { background: transparent; }
 .btn.danger { color: var(--danger); border-color: #ff5c7a55; }
-.btn.danger.ghost { background: transparent; }
+.btn.danger.ghost {
+  background: transparent;
+  color: var(--danger);
+  border: 1px solid #ff5c7a55;
+}
+.btn.danger.ghost:hover {
+  background: #ff5c7a18;
+}
 .icon-btn {
   background: var(--bg3); border: 1px solid var(--stroke);
   border-radius: 12px; width: 40px; height: 40px; flex-shrink: 0;
@@ -424,3 +431,26 @@ textarea { resize: vertical; min-height: 72px; }
 }
 .link-btn:hover { color: #7aa4ff; }
 .link-btn[hidden] { display: none !important; }
+
+.rekey-panel {
+  margin-top: 4px;
+  text-align: left;
+}
+.rekey-panel[hidden] { display: none !important; }
+.rekey-explain {
+  font-size: 0.8rem;
+  color: #c9d6f0;
+  line-height: 1.45;
+  margin: 0 0 14px;
+  padding: 10px 12px;
+  border-radius: 12px;
+  background: #4d8dff18;
+  border: 1px solid #4d8dff44;
+}
+.rekey-panel .btn {
+  width: 100%;
+  margin-top: 8px;
+}
+.rekey-panel .btn.danger.ghost {
+  margin-top: 10px;
+}

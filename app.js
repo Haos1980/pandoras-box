@@ -123,7 +123,7 @@ import {
       authLinkLogin: "Already have an account? Sign in",
       authLinkForgot: "Forgot password?",
       authForgotSuccess: "If an account exists for that email, a reset link was sent.",
-      authResetVaultWarn: "Resetting your Firebase password does not decrypt an old local vault. Export the vault first, or remember the old password to unlock it.",
+      authResetVaultWarn: "Important: Firebase password reset does NOT change your local vault key. After reset, sign in with the NEW Firebase password, then unlock the vault once with your OLD password (Re-key vault). Or reset the local vault (data loss). Export first if you can.",
       firebaseNotConfigured: "Firebase is not configured. Paste your web config into firebase-config.js (see FIREBASE-SETUP.md).",
       errorEmailRequired: "Enter your email.",
       errorInvalidEmail: "Enter a valid email address.",
@@ -132,6 +132,16 @@ import {
       errorWeakPassword: "Password is too weak (min. 6 characters).",
       errorTooManyRequests: "Too many attempts. Try again later.",
       errorNetwork: "Network error. Check your connection.",
+      authSubtitleRekey: "Re-key vault",
+      authRekeyExplain: "Firebase sign-in succeeded. This browser still has a vault encrypted with your previous password. Enter that old vault password to decrypt, then we will re-encrypt with your new password. Passwords are never stored in plain text.",
+      authOldVaultPassword: "Previous vault password",
+      authRekeyHint: "Use the password that encrypted this vault before the Firebase reset.",
+      authRekeySubmit: "Unlock & re-encrypt",
+      authResetLocalVault: "Reset local vault",
+      authResetLocalVaultConfirm: "Delete ALL local vault data in this browser? Firebase account stays signed in. This cannot be undone — all entries on this device will be lost. Create an empty vault with your new password?",
+      authWipeSuccess: "Local vault reset. Empty vault created.",
+      errorBadOldPassword: "Wrong previous vault password.",
+      authRekeyCancel: "Back to sign in",
       changeLanguage: "Language"
     },
     pl: {
@@ -217,7 +227,7 @@ import {
       authLinkLogin: "Masz już konto? Zaloguj się",
       authLinkForgot: "Nie pamiętam hasła",
       authForgotSuccess: "Jeśli konto istnieje, wysłaliśmy link resetu na e-mail.",
-      authResetVaultWarn: "Reset hasła Firebase nie odszyfruje starego lokalnego sejfu. Najpierw wyeksportuj sejf albo zapamiętaj stare hasło do odblokowania.",
+      authResetVaultWarn: "Ważne: reset hasła Firebase NIE zmienia klucza lokalnego sejfu. Po resecie zaloguj się NOWYM hasłem Firebase, a potem odblokuj sejf RAZ starym hasłem (Odblokuj starym hasłem). Albo zresetuj lokalny sejf (utrata danych). Najpierw wyeksportuj, jeśli możesz.",
       firebaseNotConfigured: "Firebase nie jest skonfigurowany. Wklej konfigurację web do firebase-config.js (patrz FIREBASE-SETUP.md).",
       errorEmailRequired: "Podaj e-mail.",
       errorInvalidEmail: "Podaj prawidłowy adres e-mail.",
@@ -226,6 +236,16 @@ import {
       errorWeakPassword: "Hasło za słabe (min. 6 znaków).",
       errorTooManyRequests: "Za dużo prób. Spróbuj później.",
       errorNetwork: "Błąd sieci. Sprawdź połączenie.",
+      authSubtitleRekey: "Odblokuj starym hasłem",
+      authRekeyExplain: "Logowanie Firebase powiodło się. W tej przeglądarce sejf jest nadal zaszyfrowany poprzednim hasłem. Podaj to stare hasło sejfu, a przepniemy szyfrowanie na nowe hasło. Haseł nie zapisujemy jawnie.",
+      authOldVaultPassword: "Poprzednie hasło sejfu",
+      authRekeyHint: "Podaj hasło, którym zaszyfrowano sejf przed resetem Firebase.",
+      authRekeySubmit: "Odblokuj i przepnij hasło",
+      authResetLocalVault: "Zresetuj lokalny sejf",
+      authResetLocalVaultConfirm: "Usunąć CAŁY lokalny sejf w tej przeglądarce? Konto Firebase pozostaje zalogowane. Tej operacji nie da się cofnąć — wszystkie wpisy na tym urządzeniu znikną. Utworzyć pusty sejf z nowym hasłem?",
+      authWipeSuccess: "Lokalny sejf zresetowany. Utworzono pusty sejf.",
+      errorBadOldPassword: "Błędne poprzednie hasło sejfu.",
+      authRekeyCancel: "Wróć do logowania",
       changeLanguage: "Język"
     },
     de: {
@@ -311,7 +331,7 @@ import {
       authLinkLogin: "Bereits ein Konto? Anmelden",
       authLinkForgot: "Passwort vergessen?",
       authForgotSuccess: "Falls ein Konto existiert, wurde ein Reset-Link gesendet.",
-      authResetVaultWarn: "Das Zurücksetzen des Firebase-Passworts entschlüsselt keinen alten lokalen Tresor. Zuerst exportieren oder altes Passwort merken.",
+      authResetVaultWarn: "Wichtig: Das Zurücksetzen des Firebase-Passworts ändert NICHT den lokalen Tresorschlüssel. Nach dem Reset mit dem NEUEN Firebase-Passwort anmelden, dann den Tresor einmal mit dem ALTEN Passwort freischalten (Tresor neu verschlüsseln). Oder lokalen Tresor zurücksetzen (Datenverlust). Zuerst exportieren, wenn möglich.",
       firebaseNotConfigured: "Firebase ist nicht konfiguriert. Web-Config in firebase-config.js einfügen (siehe FIREBASE-SETUP.md).",
       errorEmailRequired: "E-Mail eingeben.",
       errorInvalidEmail: "Gültige E-Mail-Adresse eingeben.",
@@ -320,6 +340,16 @@ import {
       errorWeakPassword: "Passwort zu schwach (mind. 6 Zeichen).",
       errorTooManyRequests: "Zu viele Versuche. Später erneut versuchen.",
       errorNetwork: "Netzwerkfehler. Verbindung prüfen.",
+      authSubtitleRekey: "Tresor neu verschlüsseln",
+      authRekeyExplain: "Firebase-Anmeldung erfolgreich. Dieser Browser hat noch einen mit dem vorherigen Passwort verschlüsselten Tresor. Altes Tresor-Passwort eingeben — wir verschlüsseln dann mit dem neuen Passwort. Passwörter werden nie im Klartext gespeichert.",
+      authOldVaultPassword: "Vorheriges Tresor-Passwort",
+      authRekeyHint: "Das Passwort, mit dem dieser Tresor vor dem Firebase-Reset verschlüsselt wurde.",
+      authRekeySubmit: "Freischalten & neu verschlüsseln",
+      authResetLocalVault: "Lokalen Tresor zurücksetzen",
+      authResetLocalVaultConfirm: "ALLE lokalen Tresordaten in diesem Browser löschen? Firebase-Konto bleibt angemeldet. Nicht rückgängig — alle Einträge auf diesem Gerät gehen verloren. Leeren Tresor mit neuem Passwort erstellen?",
+      authWipeSuccess: "Lokaler Tresor zurückgesetzt. Leerer Tresor erstellt.",
+      errorBadOldPassword: "Falsches vorheriges Tresor-Passwort.",
+      authRekeyCancel: "Zurück zur Anmeldung",
       changeLanguage: "Sprache"
     },
     ru: {
@@ -405,7 +435,7 @@ import {
       authLinkLogin: "Уже есть аккаунт? Войти",
       authLinkForgot: "Забыли пароль?",
       authForgotSuccess: "Если аккаунт существует, ссылка для сброса отправлена.",
-      authResetVaultWarn: "Сброс пароля Firebase не расшифрует старый локальный сейф. Сначала экспортируйте сейф или запомните старый пароль.",
+      authResetVaultWarn: "Важно: сброс пароля Firebase НЕ меняет ключ локального сейфа. После сброса войдите с НОВЫМ паролем Firebase, затем один раз разблокируйте сейф СТАРЫМ паролем (Перешифровать сейф). Или сбросьте локальный сейф (потеря данных). Сначала экспортируйте, если можете.",
       firebaseNotConfigured: "Firebase не настроен. Вставьте web-конфиг в firebase-config.js (см. FIREBASE-SETUP.md).",
       errorEmailRequired: "Введите email.",
       errorInvalidEmail: "Введите корректный email.",
@@ -414,6 +444,16 @@ import {
       errorWeakPassword: "Слишком слабый пароль (мин. 6 символов).",
       errorTooManyRequests: "Слишком много попыток. Попробуйте позже.",
       errorNetwork: "Ошибка сети. Проверьте соединение.",
+      authSubtitleRekey: "Перешифровать сейф",
+      authRekeyExplain: "Вход в Firebase успешен. В этом браузере сейф всё ещё зашифрован прежним паролем. Введите старый пароль сейфа — мы перешифруем новым. Пароли не хранятся открытым текстом.",
+      authOldVaultPassword: "Предыдущий пароль сейфа",
+      authRekeyHint: "Пароль, которым сейф был зашифрован до сброса Firebase.",
+      authRekeySubmit: "Разблокировать и перешифровать",
+      authResetLocalVault: "Сбросить локальный сейф",
+      authResetLocalVaultConfirm: "Удалить ВСЕ локальные данные сейфа в этом браузере? Аккаунт Firebase остаётся в сессии. Необратимо — все записи на этом устройстве будут потеряны. Создать пустой сейф с новым паролем?",
+      authWipeSuccess: "Локальный сейф сброшен. Создан пустой сейф.",
+      errorBadOldPassword: "Неверный предыдущий пароль сейфа.",
+      authRekeyCancel: "Назад ко входу",
       changeLanguage: "Язык"
     },
     fr: {
@@ -499,7 +539,7 @@ import {
       authLinkLogin: "Déjà un compte ? Se connecter",
       authLinkForgot: "Mot de passe oublié ?",
       authForgotSuccess: "Si un compte existe, un lien de réinitialisation a été envoyé.",
-      authResetVaultWarn: "Réinitialiser le mot de passe Firebase ne déchiffre pas un ancien coffre local. Exportez d'abord le coffre ou retenez l'ancien mot de passe.",
+      authResetVaultWarn: "Important : la réinitialisation du mot de passe Firebase ne change PAS la clé du coffre local. Après reset, connectez-vous avec le NOUVEAU mot de passe Firebase, puis déverrouillez une fois avec l'ANCIEN (Re-chiffrer le coffre). Ou réinitialisez le coffre local (perte de données). Exportez d'abord si possible.",
       firebaseNotConfigured: "Firebase n'est pas configuré. Collez la config web dans firebase-config.js (voir FIREBASE-SETUP.md).",
       errorEmailRequired: "Saisissez votre e-mail.",
       errorInvalidEmail: "Saisissez une adresse e-mail valide.",
@@ -508,6 +548,16 @@ import {
       errorWeakPassword: "Mot de passe trop faible (min. 6 caractères).",
       errorTooManyRequests: "Trop de tentatives. Réessayez plus tard.",
       errorNetwork: "Erreur réseau. Vérifiez la connexion.",
+      authSubtitleRekey: "Re-chiffrer le coffre",
+      authRekeyExplain: "Connexion Firebase réussie. Ce navigateur a encore un coffre chiffré avec l'ancien mot de passe. Entrez cet ancien mot de passe — nous re-chiffrerons avec le nouveau. Les mots de passe ne sont jamais stockés en clair.",
+      authOldVaultPassword: "Ancien mot de passe du coffre",
+      authRekeyHint: "Le mot de passe qui chiffrait ce coffre avant la réinitialisation Firebase.",
+      authRekeySubmit: "Déverrouiller et re-chiffrer",
+      authResetLocalVault: "Réinitialiser le coffre local",
+      authResetLocalVaultConfirm: "Supprimer TOUTES les données du coffre local dans ce navigateur ? Le compte Firebase reste connecté. Irréversible — toutes les entrées sur cet appareil seront perdues. Créer un coffre vide avec le nouveau mot de passe ?",
+      authWipeSuccess: "Coffre local réinitialisé. Coffre vide créé.",
+      errorBadOldPassword: "Ancien mot de passe du coffre incorrect.",
+      authRekeyCancel: "Retour à la connexion",
       changeLanguage: "Langue"
     },
     it: {
@@ -593,7 +643,7 @@ import {
       authLinkLogin: "Hai già un account? Accedi",
       authLinkForgot: "Password dimenticata?",
       authForgotSuccess: "Se l'account esiste, è stato inviato un link di reset.",
-      authResetVaultWarn: "Reimpostare la password Firebase non decifra una vecchia cassaforte locale. Esporta prima la cassaforte o ricorda la vecchia password.",
+      authResetVaultWarn: "Importante: il reset della password Firebase NON cambia la chiave della cassaforte locale. Dopo il reset accedi con la NUOVA password Firebase, poi sblocca una volta con la VECCHIA (Riscrivere cassaforte). Oppure resetta la cassaforte locale (perdita dati). Esporta prima se puoi.",
       firebaseNotConfigured: "Firebase non è configurato. Incolla la config web in firebase-config.js (vedi FIREBASE-SETUP.md).",
       errorEmailRequired: "Inserisci l'email.",
       errorInvalidEmail: "Inserisci un indirizzo email valido.",
@@ -602,6 +652,16 @@ import {
       errorWeakPassword: "Password troppo debole (min. 6 caratteri).",
       errorTooManyRequests: "Troppi tentativi. Riprova più tardi.",
       errorNetwork: "Errore di rete. Controlla la connessione.",
+      authSubtitleRekey: "Riscrivere cassaforte",
+      authRekeyExplain: "Accesso Firebase riuscito. In questo browser la cassaforte è ancora cifrata con la password precedente. Inserisci quella vecchia — la ricifreremo con la nuova. Le password non vengono mai salvate in chiaro.",
+      authOldVaultPassword: "Password precedente della cassaforte",
+      authRekeyHint: "La password con cui era cifrata questa cassaforte prima del reset Firebase.",
+      authRekeySubmit: "Sblocca e ricifra",
+      authResetLocalVault: "Reimposta cassaforte locale",
+      authResetLocalVaultConfirm: "Eliminare TUTTI i dati della cassaforte locale in questo browser? L'account Firebase resta connesso. Irreversibile — tutte le voci su questo dispositivo andranno perse. Creare una cassaforte vuota con la nuova password?",
+      authWipeSuccess: "Cassaforte locale reimpostata. Creata cassaforte vuota.",
+      errorBadOldPassword: "Password precedente della cassaforte errata.",
+      authRekeyCancel: "Torna all'accesso",
       changeLanguage: "Lingua"
     },
     es: {
@@ -687,7 +747,7 @@ import {
       authLinkLogin: "¿Ya tienes cuenta? Inicia sesión",
       authLinkForgot: "¿Olvidaste la contraseña?",
       authForgotSuccess: "Si la cuenta existe, se envió un enlace de restablecimiento.",
-      authResetVaultWarn: "Restablecer la contraseña de Firebase no descifra una caja fuerte local antigua. Exporta primero o recuerda la contraseña antigua.",
+      authResetVaultWarn: "Importante: restablecer la contraseña de Firebase NO cambia la clave de la caja fuerte local. Tras el reset, inicia sesión con la NUEVA contraseña de Firebase y desbloquea una vez con la ANTIGUA (Recifrar caja fuerte). O restablece la caja local (pérdida de datos). Exporta antes si puedes.",
       firebaseNotConfigured: "Firebase no está configurado. Pega la config web en firebase-config.js (ver FIREBASE-SETUP.md).",
       errorEmailRequired: "Introduce tu correo.",
       errorInvalidEmail: "Introduce un correo válido.",
@@ -696,6 +756,16 @@ import {
       errorWeakPassword: "Contraseña demasiado débil (mín. 6 caracteres).",
       errorTooManyRequests: "Demasiados intentos. Inténtalo más tarde.",
       errorNetwork: "Error de red. Comprueba la conexión.",
+      authSubtitleRekey: "Recifrar caja fuerte",
+      authRekeyExplain: "Inicio de sesión en Firebase correcto. Este navegador aún tiene una caja cifrada con la contraseña anterior. Introduce esa contraseña antigua — la volveremos a cifrar con la nueva. Las contraseñas nunca se guardan en texto claro.",
+      authOldVaultPassword: "Contraseña anterior de la caja",
+      authRekeyHint: "La contraseña con la que se cifró esta caja antes del restablecimiento de Firebase.",
+      authRekeySubmit: "Desbloquear y recifrar",
+      authResetLocalVault: "Restablecer caja local",
+      authResetLocalVaultConfirm: "¿Eliminar TODOS los datos de la caja local en este navegador? La cuenta de Firebase sigue iniciada. Irreversible: se perderán todas las entradas en este dispositivo. ¿Crear una caja vacía con la nueva contraseña?",
+      authWipeSuccess: "Caja local restablecida. Caja vacía creada.",
+      errorBadOldPassword: "Contraseña anterior de la caja incorrecta.",
+      authRekeyCancel: "Volver al inicio de sesión",
       changeLanguage: "Idioma"
     },
     zh: {
@@ -781,7 +851,7 @@ import {
       authLinkLogin: "已有账户？登录",
       authLinkForgot: "忘记密码？",
       authForgotSuccess: "如果该邮箱有账户，重置链接已发送。",
-      authResetVaultWarn: "重置 Firebase 密码无法解密旧的本地保险库。请先导出保险库，或记住旧密码以解锁。",
+      authResetVaultWarn: "重要：重置 Firebase 密码不会更改本地保险库密钥。重置后请用新的 Firebase 密码登录，再用旧密码解锁一次（重新加密保险库）。或重置本地保险库（会丢失数据）。如可能请先导出。",
       firebaseNotConfigured: "未配置 Firebase。请将 web 配置粘贴到 firebase-config.js（见 FIREBASE-SETUP.md）。",
       errorEmailRequired: "请输入邮箱。",
       errorInvalidEmail: "请输入有效的邮箱地址。",
@@ -790,6 +860,16 @@ import {
       errorWeakPassword: "密码太弱（至少 6 个字符）。",
       errorTooManyRequests: "尝试次数过多。请稍后再试。",
       errorNetwork: "网络错误。请检查连接。",
+      authSubtitleRekey: "重新加密保险库",
+      authRekeyExplain: "Firebase 登录成功。此浏览器仍有用旧密码加密的保险库。请输入旧保险库密码，我们将用新密码重新加密。密码绝不以明文存储。",
+      authOldVaultPassword: "以前的保险库密码",
+      authRekeyHint: "在 Firebase 重置之前加密此保险库所用的密码。",
+      authRekeySubmit: "解锁并重新加密",
+      authResetLocalVault: "重置本地保险库",
+      authResetLocalVaultConfirm: "删除此浏览器中的全部本地保险库数据？Firebase 账户保持登录。不可撤销——此设备上的所有条目将丢失。用新密码创建空保险库？",
+      authWipeSuccess: "本地保险库已重置。已创建空保险库。",
+      errorBadOldPassword: "以前的保险库密码错误。",
+      authRekeyCancel: "返回登录",
       changeLanguage: "语言"
     },
     ja: {
@@ -875,7 +955,7 @@ import {
       authLinkLogin: "すでにアカウントがありますか？サインイン",
       authLinkForgot: "パスワードをお忘れですか？",
       authForgotSuccess: "アカウントがある場合、リセットリンクを送信しました。",
-      authResetVaultWarn: "Firebaseパスワードのリセットでは古いローカル保管庫は復号できません。先にエクスポートするか、古いパスワードを覚えておいてください。",
+      authResetVaultWarn: "重要：Firebaseパスワードのリセットはローカル保管庫の鍵を変更しません。リセット後は新しいFirebaseパスワードでサインインし、古いパスワードで一度解除（保管庫を再暗号化）してください。またはローカル保管庫をリセット（データ損失）。可能なら先にエクスポート。",
       firebaseNotConfigured: "Firebaseが未設定です。web設定をfirebase-config.jsに貼り付けてください（FIREBASE-SETUP.md参照）。",
       errorEmailRequired: "メールを入力してください。",
       errorInvalidEmail: "有効なメールアドレスを入力してください。",
@@ -884,6 +964,16 @@ import {
       errorWeakPassword: "パスワードが弱すぎます（最低6文字）。",
       errorTooManyRequests: "試行回数が多すぎます。後でもう一度お試しください。",
       errorNetwork: "ネットワークエラー。接続を確認してください。",
+      authSubtitleRekey: "保管庫を再暗号化",
+      authRekeyExplain: "Firebaseサインインに成功しました。このブラウザには以前のパスワードで暗号化された保管庫が残っています。古い保管庫パスワードを入力すると、新しいパスワードで再暗号化します。パスワードは平文で保存されません。",
+      authOldVaultPassword: "以前の保管庫パスワード",
+      authRekeyHint: "Firebaseリセット前にこの保管庫を暗号化していたパスワード。",
+      authRekeySubmit: "解除して再暗号化",
+      authResetLocalVault: "ローカル保管庫をリセット",
+      authResetLocalVaultConfirm: "このブラウザのローカル保管庫データをすべて削除しますか？Firebaseアカウントはサインインのままです。元に戻せません—この端末の全エントリが失われます。新しいパスワードで空の保管庫を作成しますか？",
+      authWipeSuccess: "ローカル保管庫をリセットしました。空の保管庫を作成しました。",
+      errorBadOldPassword: "以前の保管庫パスワードが違います。",
+      authRekeyCancel: "サインインに戻る",
       changeLanguage: "言語"
     }
   };
@@ -895,7 +985,9 @@ import {
   let editingId = null;
   let lang = "en";
   let pendingLogin = "";
-  /** @type {"login"|"register"|"forgot"} */
+  /** In-memory only during re-key; never written to storage. */
+  let pendingNewPassword = "";
+  /** @type {"login"|"register"|"forgot"|"rekey"} */
   let authMode = "login";
 
   /**
@@ -934,6 +1026,12 @@ import {
   const linkToRegister = $("#link-to-register");
   const linkToForgot = $("#link-to-forgot");
   const linkToLogin = $("#link-to-login");
+  const rekeyPanel = $("#rekey-panel");
+  const rekeyOldPassEl = $("#rekey-old-pass");
+  const rekeyError = $("#rekey-error");
+  const rekeySubmit = $("#rekey-submit");
+  const rekeyWipe = $("#rekey-wipe");
+  const rekeyCancel = $("#rekey-cancel");
   const searchEl = $("#search");
   const listEl = $("#entry-list");
   const emptyEl = $("#empty-state");
@@ -1096,6 +1194,52 @@ import {
     );
   }
 
+  /** Decrypt with old passphrase, re-encrypt with new (fresh salt). Keeps entries. */
+  async function rekeyVault(oldPassphrase, newPassphrase) {
+    await loadVault(oldPassphrase);
+    const salt = crypto.getRandomValues(new Uint8Array(SALT_LEN));
+    const key = await deriveKey(newPassphrase, salt);
+    sessionKey = key;
+    const saltB64 = bufToB64(salt);
+    const login = pendingLogin || getMeta().login || "";
+    setMeta({ salt: saltB64, ...(login ? { login } : {}) });
+    await saveVault();
+  }
+
+  /** Wipe local vault ciphertext + salt; keep optional login/phone meta. */
+  function wipeLocalVaultData() {
+    localStorage.removeItem(STORAGE_KEY);
+    const meta = getMeta();
+    const next = {};
+    if (meta.login) next.login = meta.login;
+    if (meta.phone) next.phone = meta.phone;
+    localStorage.setItem(META_KEY, JSON.stringify(next));
+    sessionKey = null;
+    entries = [];
+  }
+
+  function clearPendingSecrets() {
+    pendingNewPassword = "";
+  }
+
+  function enterRekeyMode(email, newPassword) {
+    pendingLogin = email;
+    pendingNewPassword = newPassword;
+    authMode = "rekey";
+    lockError.hidden = true;
+    if (lockSuccess) {
+      lockSuccess.hidden = true;
+      lockSuccess.textContent = "";
+    }
+    if (rekeyError) {
+      rekeyError.hidden = true;
+      rekeyError.textContent = "";
+    }
+    if (rekeyOldPassEl) rekeyOldPassEl.value = "";
+    refreshLockCopy();
+    setTimeout(() => rekeyOldPassEl && rekeyOldPassEl.focus(), 50);
+  }
+
   function applyI18n() {
     document.documentElement.lang = lang;
     document.title = `${t("appName")} · Pandora's Box`;
@@ -1127,12 +1271,18 @@ import {
   }
 
   function setAuthMode(mode) {
+    if (mode !== "rekey") clearPendingSecrets();
     authMode = mode;
     lockError.hidden = true;
     if (lockSuccess) {
       lockSuccess.hidden = true;
       lockSuccess.textContent = "";
     }
+    if (rekeyError) {
+      rekeyError.hidden = true;
+      rekeyError.textContent = "";
+    }
+    if (rekeyOldPassEl && mode !== "rekey") rekeyOldPassEl.value = "";
     refreshLockCopy();
   }
 
@@ -1149,17 +1299,27 @@ import {
 
     const isForgot = authMode === "forgot";
     const isRegister = authMode === "register";
+    const isRekey = authMode === "rekey";
 
-    if (fieldPhone) fieldPhone.hidden = !isRegister;
-    if (fieldPassword) fieldPassword.hidden = isForgot;
-    if (resetWarn) resetWarn.hidden = !isForgot;
+    if (lockForm) lockForm.hidden = isRekey;
+    if (rekeyPanel) rekeyPanel.hidden = !isRekey;
 
-    if (isForgot) {
+    if (fieldPhone) fieldPhone.hidden = !isRegister || isRekey;
+    if (fieldPassword) fieldPassword.hidden = isForgot || isRekey;
+    if (resetWarn) resetWarn.hidden = !isForgot || isRekey;
+
+    if (isRekey) {
+      lockSubtitle.textContent = t("authSubtitleRekey");
+      if (lockHint) lockHint.textContent = t("authRekeyHint");
+      loginEl.required = false;
+      passphraseEl.required = false;
+    } else if (isForgot) {
       lockSubtitle.textContent = t("authSubtitleForgot");
       lockSubmit.textContent = t("authSubmitForgot");
       if (lockHint) lockHint.textContent = t("authHintForgot");
       passphraseEl.required = false;
       passphraseEl.value = "";
+      loginEl.required = true;
     } else if (isRegister) {
       lockSubtitle.textContent = t("authSubtitleRegister");
       lockSubmit.textContent = t("authSubmitRegister");
@@ -1167,6 +1327,7 @@ import {
       passphraseEl.required = true;
       passphraseEl.autocomplete = "new-password";
       passphraseEl.minLength = 6;
+      loginEl.required = true;
     } else {
       lockSubtitle.textContent = t("authSubtitleLogin");
       lockSubmit.textContent = t("authSubmitLogin");
@@ -1174,14 +1335,14 @@ import {
       passphraseEl.required = true;
       passphraseEl.autocomplete = "current-password";
       passphraseEl.minLength = 6;
+      loginEl.required = true;
     }
 
-    loginEl.required = true;
     loginEl.type = "email";
 
     if (linkToRegister) linkToRegister.hidden = authMode !== "login";
     if (linkToForgot) linkToForgot.hidden = authMode !== "login";
-    if (linkToLogin) linkToLogin.hidden = authMode === "login";
+    if (linkToLogin) linkToLogin.hidden = authMode === "login" || isRekey;
   }
 
   function updateLangChips() {
@@ -1221,6 +1382,7 @@ import {
     sessionKey = null;
     entries = [];
     pendingLogin = "";
+    clearPendingSecrets();
     showScreen("lock");
     closeModal();
     lockError.hidden = true;
@@ -1228,7 +1390,12 @@ import {
       lockSuccess.hidden = true;
       lockSuccess.textContent = "";
     }
+    if (rekeyError) {
+      rekeyError.hidden = true;
+      rekeyError.textContent = "";
+    }
     lockForm.reset();
+    if (rekeyOldPassEl) rekeyOldPassEl.value = "";
     authMode = "login";
     const existing = storedLogin();
     if (existing) loginEl.value = existing;
@@ -1506,13 +1673,14 @@ import {
             setMeta({ login: email, ...(phone ? { phone } : {}) });
           } catch {
             setMeta({ login: email, ...(phone ? { phone } : {}) });
-            showLockError(t("errorBadPassword"));
+            enterRekeyMode(email, pw);
             return;
           }
         } else {
           await createVault(pw, email);
           if (phone) setMeta({ phone });
         }
+        clearPendingSecrets();
         showVault();
         return;
       }
@@ -1523,7 +1691,8 @@ import {
         try {
           await loadVault(pw);
         } catch {
-          showLockError(t("errorBadPassword"));
+          // Firebase OK; local AES vault still keyed with previous password
+          enterRekeyMode(email, pw);
           return;
         }
         pendingLogin = email;
@@ -1532,6 +1701,7 @@ import {
         await createVault(pw, email);
         if (phone) setMeta({ phone });
       }
+      clearPendingSecrets();
       showVault();
     } catch (err) {
       const code = (err && (err.code || err.message)) || "";
@@ -1555,6 +1725,87 @@ import {
   }
   if (linkToLogin) {
     linkToLogin.addEventListener("click", () => setAuthMode("login"));
+  }
+
+  function showRekeyError(msg) {
+    if (!rekeyError) return;
+    rekeyError.textContent = msg;
+    rekeyError.hidden = false;
+  }
+
+  if (rekeySubmit) {
+    rekeySubmit.addEventListener("click", async () => {
+      if (authMode !== "rekey" || !pendingNewPassword) {
+        setAuthMode("login");
+        return;
+      }
+      const oldPw = (rekeyOldPassEl && rekeyOldPassEl.value) || "";
+      if (oldPw.length < 6) {
+        showRekeyError(t("errorPasswordShort"));
+        return;
+      }
+      try {
+        rekeySubmit.disabled = true;
+        if (rekeyWipe) rekeyWipe.disabled = true;
+        if (rekeyError) rekeyError.hidden = true;
+        await rekeyVault(oldPw, pendingNewPassword);
+        pendingLogin = pendingLogin || storedLogin() || loginEl.value.trim();
+        if (pendingLogin) setMeta({ login: pendingLogin });
+        clearPendingSecrets();
+        if (rekeyOldPassEl) rekeyOldPassEl.value = "";
+        showVault();
+      } catch {
+        showRekeyError(t("errorBadOldPassword"));
+      } finally {
+        rekeySubmit.disabled = false;
+        if (rekeyWipe) rekeyWipe.disabled = false;
+        if (rekeyOldPassEl) rekeyOldPassEl.value = "";
+      }
+    });
+  }
+
+  if (rekeyWipe) {
+    rekeyWipe.addEventListener("click", async () => {
+      if (authMode !== "rekey" || !pendingNewPassword) {
+        setAuthMode("login");
+        return;
+      }
+      if (!confirm(t("authResetLocalVaultConfirm"))) return;
+      try {
+        rekeyWipe.disabled = true;
+        if (rekeySubmit) rekeySubmit.disabled = true;
+        const email = pendingLogin || loginEl.value.trim() || storedLogin();
+        const newPw = pendingNewPassword;
+        wipeLocalVaultData();
+        await createVault(newPw, email);
+        clearPendingSecrets();
+        if (rekeyOldPassEl) rekeyOldPassEl.value = "";
+        toast(t("authWipeSuccess"));
+        showVault();
+      } catch {
+        showRekeyError(t("errorCreateFailed"));
+      } finally {
+        rekeyWipe.disabled = false;
+        if (rekeySubmit) rekeySubmit.disabled = false;
+      }
+    });
+  }
+
+  if (rekeyCancel) {
+    rekeyCancel.addEventListener("click", () => {
+      clearPendingSecrets();
+      // Return to login UI but keep Firebase session optional — sign out for clean state
+      showLock();
+    });
+  }
+
+  if (rekeyOldPassEl) {
+    rekeyOldPassEl.addEventListener("keydown", (ev) => {
+      if (ev.key === "Enter") {
+        ev.preventDefault();
+        if (rekeySubmit) rekeySubmit.click();
+      }
+    });
   }
 
   $("#btn-lock").addEventListener("click", () => {
