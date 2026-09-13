@@ -1,18 +1,17 @@
 /**
  * Firebase web config — PUBLIC client keys only (safe in frontend).
- * Paste values from Firebase Console → Project settings → Your apps → Web.
- * Set configured: true after filling real values (not REPLACE_ME placeholders).
- *
- * See FIREBASE-SETUP.md for a Polish step-by-step guide.
+ * Project: pandoras-box-3a887 (Spark)
+ * See FIREBASE-SETUP.md.
  */
 export const firebaseConfig = {
-  apiKey: "REPLACE_ME",
-  authDomain: "REPLACE_ME.firebaseapp.com",
-  projectId: "REPLACE_ME",
-  storageBucket: "REPLACE_ME.appspot.com",
-  messagingSenderId: "REPLACE_ME",
-  appId: "REPLACE_ME"
+  apiKey: "AIzaSyA81d9pkW8fgfel6e7H6duobOb0aMTEvnE",
+  authDomain: "pandoras-box-3a887.firebaseapp.com",
+  projectId: "pandoras-box-3a887",
+  storageBucket: "pandoras-box-3a887.firebasestorage.app",
+  messagingSenderId: "798728766085",
+  appId: "1:798728766085:web:a192edcf0899a104539fec",
+  measurementId: "G-ZE6MQV2BZE"
 };
 
 /** Flip to true only after replacing all REPLACE_ME placeholders with real values. */
-export const configured = false;
+export const configured = true;
