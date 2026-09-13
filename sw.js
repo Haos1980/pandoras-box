@@ -1,5 +1,5 @@
-/* Pandora's Box — minimal offline cache */
-const CACHE = "pandora-v4";
+/* Pandora's Box — minimal offline cache (aggressive update) */
+const CACHE = "pandora-v5";
 const ASSETS = [
   "./",
   "./index.html",
@@ -27,14 +27,48 @@ self.addEventListener("activate", (event) => {
   );
 });
 
+self.addEventListener("message", (event) => {
+  if (event.data && event.data.type === "SKIP_WAITING") self.skipWaiting();
+});
+
 self.addEventListener("fetch", (event) => {
   const req = event.request;
   if (req.method !== "GET") return;
+
+  const url = new URL(req.url);
+  if (url.origin !== self.location.origin) return;
+
+  const path = url.pathname;
+  const isShell =
+    path.endsWith("/") ||
+    path.endsWith("/index.html") ||
+    path.endsWith("/app.js") ||
+    path.endsWith("/auth.js") ||
+    path.endsWith("/firebase-config.js") ||
+    path.endsWith("/style.css") ||
+    path.endsWith("/sw.js");
+
+  // Network-first for app shell so auth UX updates land quickly
+  if (isShell) {
+    event.respondWith(
+      fetch(req)
+        .then((res) => {
+          if (res && res.ok) {
+            const copy = res.clone();
+            caches.open(CACHE).then((c) => c.put(req, copy));
+          }
+          return res;
+        })
+        .catch(() => caches.match(req).then((c) => c || caches.match("./index.html")))
+    );
+    return;
+  }
+
   event.respondWith(
     caches.match(req).then((cached) => {
       const fetched = fetch(req)
         .then((res) => {
-          if (res && res.ok && new URL(req.url).origin === self.location.origin) {
+          if (res && res.ok) {
             const copy = res.clone();
             caches.open(CACHE).then((c) => c.put(req, copy));
           }

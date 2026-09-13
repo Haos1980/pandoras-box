@@ -34,14 +34,11 @@
         <h1 data-i18n="appName">Pandora's Box</h1>
         <p class="subtitle" id="lock-subtitle"></p>
         <p class="firebase-banner" id="firebase-banner" hidden role="status"></p>
+
         <form id="lock-form" autocomplete="off">
           <label class="field" id="field-email">
             <span data-i18n="authEmail">Email</span>
             <input type="email" id="login" maxlength="200" autocomplete="username" autocapitalize="none" spellcheck="false" inputmode="email" data-i18n-placeholder="authEmailPlaceholder" />
-          </label>
-          <label class="field" id="field-phone" hidden>
-            <span data-i18n="authPhoneOptional">Phone (optional)</span>
-            <input type="tel" id="auth-phone" maxlength="40" autocomplete="tel" data-i18n-placeholder="authPhonePlaceholder" />
           </label>
           <label class="field" id="field-password">
             <span data-i18n="authPassword">Password</span>
@@ -61,22 +58,34 @@
             <button type="button" class="link-btn" id="link-to-login" data-i18n="authLinkLogin" hidden></button>
           </nav>
         </form>
+
+        <!-- Recovery after Firebase OK but local vault password mismatch -->
         <div id="rekey-panel" class="rekey-panel" hidden>
-          <p class="rekey-explain" data-i18n="authRekeyExplain"></p>
-          <label class="field" id="field-rekey-old">
-            <span data-i18n="authOldVaultPassword">Previous vault password</span>
-            <div class="pw-row">
-              <input type="password" id="rekey-old-pass" minlength="6" autocomplete="off" placeholder="••••••••" />
-              <button type="button" class="icon-btn" data-toggle-pw="#rekey-old-pass" data-i18n-aria="authTogglePw">👁</button>
-            </div>
-          </label>
-          <p class="hint" id="rekey-hint" data-i18n="authRekeyHint"></p>
+          <p class="rekey-explain" id="rekey-explain" data-i18n="authRekeyExplain"></p>
           <p class="error" id="rekey-error" hidden></p>
-          <button type="button" class="btn primary" id="rekey-submit" data-i18n="authRekeySubmit"></button>
-          <button type="button" class="btn danger ghost" id="rekey-wipe" data-i18n="authResetLocalVault"></button>
-          <nav class="auth-links" aria-label="Rekey actions">
-            <button type="button" class="link-btn" id="rekey-cancel" data-i18n="authRekeyCancel"></button>
-          </nav>
+
+          <div id="rekey-choice" class="rekey-choice">
+            <button type="button" class="btn primary" id="rekey-choose-old" data-i18n="authRekeyChoiceOld"></button>
+            <button type="button" class="btn danger ghost" id="rekey-wipe" data-i18n="authResetLocalVault"></button>
+            <nav class="auth-links">
+              <button type="button" class="link-btn" id="rekey-cancel" data-i18n="authRekeyCancel"></button>
+            </nav>
+          </div>
+
+          <div id="rekey-old-form" class="rekey-old-form" hidden>
+            <label class="field" id="field-rekey-old">
+              <span data-i18n="authOldVaultPassword">Old vault password</span>
+              <div class="pw-row">
+                <input type="password" id="rekey-old-pass" minlength="6" autocomplete="off" placeholder="••••••••" />
+                <button type="button" class="icon-btn" data-toggle-pw="#rekey-old-pass" data-i18n-aria="authTogglePw">👁</button>
+              </div>
+            </label>
+            <p class="hint" id="rekey-hint" data-i18n="authRekeyHint"></p>
+            <button type="button" class="btn primary" id="rekey-submit" data-i18n="authRekeySubmit"></button>
+            <nav class="auth-links">
+              <button type="button" class="link-btn" id="rekey-back" data-i18n="authRekeyBack"></button>
+            </nav>
+          </div>
         </div>
       </div>
     </section>

@@ -70,6 +70,7 @@ export async function firebaseSignOut() {
   }
 }
 
+/** Map Firebase Auth error codes to i18n keys (plain language). */
 export function mapFirebaseError(code) {
   switch (code) {
     case "firebase-not-configured":
@@ -79,8 +80,11 @@ export function mapFirebaseError(code) {
     case "auth/invalid-email":
       return "errorInvalidEmail";
     case "auth/user-not-found":
-    case "auth/invalid-credential":
+      return "errorUserNotFound";
     case "auth/wrong-password":
+      return "errorWrongPassword";
+    case "auth/invalid-credential":
+    case "auth/invalid-login-credentials":
       return "errorAuthFailed";
     case "auth/weak-password":
       return "errorWeakPassword";
