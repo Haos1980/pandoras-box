@@ -1,14 +1,14 @@
 {
-  "name": "Puszka Pandory · Pandora's Box",
+  "name": "Pandora's Box",
   "short_name": "Pandora",
-  "description": "Zaszyfrowany sejf haseł — lokalnie w przeglądarce (AES-GCM).",
+  "description": "Encrypted local password vault — AES-GCM in the browser.",
   "start_url": "./",
   "scope": "./",
   "display": "standalone",
   "orientation": "portrait",
   "background_color": "#0b1020",
   "theme_color": "#0b1020",
-  "lang": "pl",
+  "lang": "en",
   "icons": [
     {
       "src": "icons/icon-192.png",

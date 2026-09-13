@@ -15,7 +15,7 @@
   --radius: 14px;
   --safe-b: env(safe-area-inset-bottom, 0px);
   --safe-t: env(safe-area-inset-top, 0px);
-  --font: system-ui, -apple-system, "Segoe UI", Roboto, "Helvetica Neue", Arial, sans-serif;
+  --font: system-ui, -apple-system, "Segoe UI", Roboto, "Helvetica Neue", "Noto Sans", "PingFang SC", "Hiragino Sans", "Noto Sans JP", Arial, sans-serif;
 }
 
 * { box-sizing: border-box; }
@@ -27,7 +27,7 @@ html, body {
   overscroll-behavior: none;
 }
 button, input, textarea, select { font: inherit; color: inherit; }
-button { cursor: pointer; }
+button { cursor: pointer; touch-action: manipulation; }
 input, textarea {
   width: 100%;
   background: var(--bg3);
@@ -58,7 +58,127 @@ textarea { resize: vertical; min-height: 72px; }
 }
 
 .screen { display: none; flex: 1; flex-direction: column; min-height: 0; }
-.screen.active { display: flex; }
+.screen.active { display: flex; animation: fadeIn 0.22s ease; }
+
+/* LANGUAGE SPLASH */
+#lang-screen {
+  justify-content: space-between;
+  padding: 36px 18px 28px;
+}
+.lang-hero {
+  text-align: center;
+  padding-top: min(10vh, 72px);
+}
+.lang-hero h1 {
+  margin: 4px 0 0;
+  font-size: 2rem;
+  letter-spacing: 0.04em;
+  font-weight: 750;
+  background: linear-gradient(135deg, #f4f7ff 20%, #c5b0ff 70%, #7aa4ff);
+  -webkit-background-clip: text;
+  background-clip: text;
+  color: transparent;
+}
+.lang-hero .lock-logo { margin-bottom: 4px; }
+.flag-grid {
+  display: grid;
+  grid-template-columns: repeat(3, 1fr);
+  gap: 10px;
+  padding-bottom: 8px;
+}
+.flag-btn {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  gap: 8px;
+  padding: 14px 6px 12px;
+  background: var(--bg2);
+  border: 1px solid var(--stroke);
+  border-radius: 16px;
+  transition: transform 0.12s ease, border-color 0.15s, background 0.15s;
+}
+.flag-btn:hover { border-color: #4d8dff66; }
+.flag-btn:active { transform: scale(0.96); }
+.flag-btn.active {
+  border-color: var(--primary);
+  background: #4d8dff18;
+  box-shadow: 0 0 0 3px #4d8dff22;
+}
+.flag-name {
+  font-size: 0.78rem;
+  font-weight: 650;
+  color: var(--muted);
+  letter-spacing: 0.01em;
+}
+.flag-btn.active .flag-name { color: var(--text); }
+.flag-icon {
+  width: 52px;
+  height: 35px;
+  border-radius: 6px;
+  overflow: hidden;
+  box-shadow: 0 0 0 1px #ffffff22, 0 4px 12px #0005;
+  flex-shrink: 0;
+}
+.flag-icon svg { display: block; width: 100%; height: 100%; }
+
+/* LANG CHIP / POPOVER */
+.lang-chip {
+  background: var(--bg3);
+  border: 1px solid var(--stroke);
+  border-radius: 12px;
+  width: 40px;
+  height: 40px;
+  display: grid;
+  place-items: center;
+  padding: 0;
+  flex-shrink: 0;
+}
+.lang-chip.sm { width: 40px; height: 40px; }
+.lang-chip:active { transform: scale(0.96); }
+.lang-chip .chip-flag .flag-icon {
+  width: 24px;
+  height: 16px;
+  border-radius: 3px;
+  box-shadow: 0 0 0 1px #ffffff33;
+}
+#lock-screen { position: relative; }
+#lock-lang-btn {
+  position: absolute;
+  top: 12px;
+  right: 12px;
+  z-index: 3;
+}
+.lang-popover {
+  position: fixed;
+  z-index: 80;
+  display: grid;
+  grid-template-columns: repeat(3, 1fr);
+  gap: 6px;
+  min-width: 196px;
+  background: var(--bg2);
+  border: 1px solid var(--stroke);
+  border-radius: 14px;
+  padding: 8px;
+  box-shadow: 0 16px 40px #000a;
+}
+.lang-popover[hidden] { display: none; }
+.lang-pop-btn {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  gap: 4px;
+  padding: 8px 4px 6px;
+  background: transparent;
+  border: 1px solid transparent;
+  border-radius: 10px;
+}
+.lang-pop-btn .flag-icon { width: 30px; height: 20px; }
+.lang-pop-btn .flag-name { font-size: 0.6rem; font-weight: 650; color: var(--muted); }
+.lang-pop-btn.active {
+  border-color: var(--primary);
+  background: #4d8dff22;
+}
+.lang-pop-btn.active .flag-name { color: var(--text); }
 
 /* LOCK */
 .lock-card {
@@ -115,7 +235,6 @@ textarea { resize: vertical; min-height: 72px; }
   display: grid; place-items: center; font-size: 1rem;
 }
 .icon-btn:active { transform: scale(0.96); }
-.icon-btn.sm { width: 34px; height: 34px; font-size: 0.85rem; border-radius: 10px; }
 
 /* TOPBAR */
 .topbar {

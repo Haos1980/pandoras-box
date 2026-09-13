@@ -1,14 +1,14 @@
-# Puszka Pandory · Pandora's Box
+# Pandora's Box
 
-Polski, ciemny, mobile-first **PWA** — lokalny sejf haseł (duch Most Autonomii).  
-Dane szyfrowane w przeglądarce (**AES-GCM** + PBKDF2). Brak plaintextu haseł w repozytorium.
+Dark, mobile-first **PWA** — local password vault (Most Autonomii spirit).  
+Encrypted in the browser (**AES-GCM** + PBKDF2). No plaintext secrets in the repo.
 
-Polish-first dark mobile PWA password vault. Ciphertext only in `localStorage`; export/import is encrypted JSON.
+Nine languages on first launch: Polski, Deutsch, Русский, English, Français, Italiano, Español, 中文, 日本語.
 
-## Otwórz / Open
+## Open
 
-- **GitHub Pages** (jeśli włączone): https://haos1980.github.io/pandoras-box/
-- Lokalnie:
+- **GitHub Pages**: https://haos1980.github.io/pandoras-box/
+- Locally:
 
 ```bash
 cd pandoras-box
@@ -16,26 +16,27 @@ python3 -m http.server 8080
 # → http://localhost:8080
 ```
 
-Na telefonie: Chrome → Dodaj do ekranu głównego.
+On a phone: Chrome → Add to Home Screen.
 
-## Jak używać / How to unlock
+## How to use
 
-1. Przy pierwszym starcie ustaw **hasło główne** (min. 4 znaki) i potwierdź.
-2. Odblokuj tym samym hasłem przy kolejnych wizytach.
-3. Dodaj wpisy (＋): usługa*, e-mail, telefon, hasło, URL, tag, notatki, Login with Google.
-4. Szukaj, edytuj, usuwaj; kopiuj e-mail / tel / hasło / URL.
-5. ⬇ eksport / ⬆ import zaszyfrowanego JSON · 🔒 blokada sejfu.
+1. Choose a language (flags). Change it later from the flag chip on lock or vault.
+2. First visit: **login + password** → Create / Register.
+3. Later: the same login + password → Unlock. Legacy vaults without a stored login still unlock with password only; the next save can store the login.
+4. Add entries (＋): service*, email, phone, password, URL, tag, notes, Login with Google.
+5. Search, edit, delete; copy email / phone / password / URL.
+6. ⬇ export / ⬆ import encrypted JSON · 🔒 lock the vault.
 
-**Uwaga:** zapomniane hasło główne = brak odzyskania danych (to zamierzone).
+**Note:** a forgotten password cannot be recovered (by design).
 
-## Pliki
+## Files
 
 `index.html` · `style.css` · `app.js` · `manifest.json` · `sw.js` · `icons/`
 
-## Bezpieczeństwo
+## Security
 
-- Sól + IV losowe; klucz z hasła (PBKDF2-SHA-256, 210k iteracji).
-- Sejf = ciphertext w `localStorage` — UI może być publiczny (Pages).
-- Nie commituj eksportów JSON z prawdziwymi danymi.
+- Random salt + IV; key from password (PBKDF2-SHA-256, 210k iterations).
+- Login is stored in local META (not the encryption key). Vault ciphertext lives in `localStorage`.
+- Do not commit JSON exports that contain real data.
 
-Autor: [Haos1980](https://github.com/Haos1980)
+Author: [Haos1980](https://github.com/Haos1980)

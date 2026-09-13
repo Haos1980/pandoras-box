@@ -1,75 +1,87 @@
 <!DOCTYPE html>
-<html lang="pl">
+<html lang="en">
 <head>
   <meta charset="UTF-8" />
   <meta name="viewport" content="width=device-width, initial-scale=1, viewport-fit=cover, maximum-scale=1" />
   <meta name="theme-color" content="#0b1020" />
   <meta name="apple-mobile-web-app-capable" content="yes" />
   <meta name="apple-mobile-web-app-status-bar-style" content="black-translucent" />
-  <meta name="description" content="Puszka Pandory — zaszyfrowany sejf haseł (PWA)" />
+  <meta name="description" content="Pandora's Box — encrypted local password vault (PWA)" />
   <link rel="manifest" href="manifest.json" />
   <link rel="icon" type="image/svg+xml" href="icons/icon.svg" />
   <link rel="apple-touch-icon" href="icons/icon-192.png" />
-  <title>Puszka Pandory · Pandora's Box</title>
+  <title>Pandora's Box</title>
   <link rel="stylesheet" href="style.css" />
 </head>
 <body>
   <div id="app">
-    <!-- LOCK SCREEN -->
-    <section id="lock-screen" class="screen active" aria-label="Ekran blokady">
+    <!-- LANGUAGE SPLASH -->
+    <section id="lang-screen" class="screen" aria-label="Language">
+      <div class="lang-hero">
+        <div class="lock-logo" aria-hidden="true">📦</div>
+        <h1>Pandora's Box</h1>
+      </div>
+      <div class="flag-grid" id="flag-grid"></div>
+    </section>
+
+    <!-- AUTH / LOCK -->
+    <section id="lock-screen" class="screen" aria-label="Lock">
+      <button type="button" class="lang-chip" id="lock-lang-btn" data-i18n-aria="changeLanguage" data-i18n-title="changeLanguage" aria-haspopup="true" aria-expanded="false">
+        <span class="chip-flag" data-current-flag></span>
+      </button>
       <div class="lock-card">
         <div class="lock-logo" aria-hidden="true">📦</div>
-        <h1>Puszka Pandory</h1>
-        <p class="subtitle" id="lock-subtitle">Ustaw hasło główne, aby utworzyć sejf</p>
+        <h1 data-i18n="appName">Pandora's Box</h1>
+        <p class="subtitle" id="lock-subtitle"></p>
         <form id="lock-form" autocomplete="off">
           <label class="field">
-            <span>Hasło główne / Passphrase</span>
+            <span data-i18n="authLogin">Login</span>
+            <input type="text" id="login" maxlength="80" autocomplete="username" autocapitalize="none" spellcheck="false" data-i18n-placeholder="authLoginPlaceholder" />
+          </label>
+          <label class="field">
+            <span data-i18n="authPassword">Password</span>
             <div class="pw-row">
               <input type="password" id="passphrase" required minlength="4" autocomplete="current-password" placeholder="••••••••" />
-              <button type="button" class="icon-btn" data-toggle-pw="#passphrase" aria-label="Pokaż/ukryj">👁</button>
+              <button type="button" class="icon-btn" data-toggle-pw="#passphrase" data-i18n-aria="authTogglePw">👁</button>
             </div>
           </label>
-          <label class="field" id="passphrase-confirm-wrap" hidden>
-            <span>Potwierdź hasło</span>
-            <div class="pw-row">
-              <input type="password" id="passphrase-confirm" minlength="4" autocomplete="new-password" placeholder="••••••••" />
-              <button type="button" class="icon-btn" data-toggle-pw="#passphrase-confirm" aria-label="Pokaż/ukryj">👁</button>
-            </div>
-          </label>
-          <p class="hint" id="lock-hint">Min. 4 znaki. Dane szyfrowane AES-GCM w przeglądarce.</p>
+          <p class="hint" id="lock-hint" data-i18n="authHint"></p>
           <p class="error" id="lock-error" hidden></p>
-          <button type="submit" class="btn primary" id="lock-submit">Utwórz sejf</button>
+          <button type="submit" class="btn primary" id="lock-submit"></button>
         </form>
       </div>
     </section>
 
     <!-- MAIN VAULT -->
-    <section id="vault-screen" class="screen" aria-label="Sejf">
+    <section id="vault-screen" class="screen" aria-label="Vault">
       <header class="topbar">
         <div class="brand">
           <span class="logo" aria-hidden="true">📦</span>
           <div>
-            <h1>Puszka Pandory</h1>
-            <p class="subtitle">Pandora's Box · sejf lokalny</p>
+            <h1 data-i18n="appName">Pandora's Box</h1>
+            <p class="subtitle" data-i18n="vaultSubtitle"></p>
           </div>
         </div>
         <div class="top-actions">
-          <button type="button" class="icon-btn" id="btn-export" title="Eksport" aria-label="Eksport">⬇</button>
-          <button type="button" class="icon-btn" id="btn-import" title="Import" aria-label="Import">⬆</button>
-          <button type="button" class="icon-btn" id="btn-lock" title="Zablokuj" aria-label="Zablokuj">🔒</button>
+          <button type="button" class="lang-chip sm" id="vault-lang-btn" data-i18n-aria="changeLanguage" data-i18n-title="changeLanguage" aria-haspopup="true" aria-expanded="false">
+            <span class="chip-flag" data-current-flag></span>
+          </button>
+          <button type="button" class="icon-btn" id="btn-export" data-i18n-title="export" data-i18n-aria="export">⬇</button>
+          <button type="button" class="icon-btn" id="btn-import" data-i18n-title="import" data-i18n-aria="import">⬆</button>
+          <button type="button" class="icon-btn" id="btn-lock" data-i18n-title="lock" data-i18n-aria="lock">🔒</button>
         </div>
       </header>
 
       <div class="toolbar">
         <label class="search-wrap">
-          <span class="sr-only">Szukaj</span>
-          <input type="search" id="search" placeholder="Szukaj usługi, tagu, e-maila…" autocomplete="off" />
+          <span class="sr-only" data-i18n="search">Search</span>
+          <input type="search" id="search" data-i18n-placeholder="searchPlaceholder" autocomplete="off" />
         </label>
-        <button type="button" class="btn primary fab-inline" id="btn-add" aria-label="Dodaj wpis">＋</button>
+        <button type="button" class="btn primary fab-inline" id="btn-add" data-i18n-aria="addEntry">＋</button>
       </div>
 
       <main id="entry-list" class="entry-list" role="list"></main>
-      <p class="empty" id="empty-state" hidden>Brak wpisów. Dodaj pierwszy (＋).</p>
+      <p class="empty" id="empty-state" hidden data-i18n="emptyState"></p>
     </section>
 
     <!-- ENTRY FORM MODAL -->
@@ -77,55 +89,56 @@
       <div class="modal-backdrop" data-close-modal></div>
       <div class="modal-sheet" role="dialog" aria-modal="true" aria-labelledby="modal-title">
         <header class="modal-head">
-          <h2 id="modal-title">Nowy wpis</h2>
-          <button type="button" class="icon-btn" data-close-modal aria-label="Zamknij">✕</button>
+          <h2 id="modal-title"></h2>
+          <button type="button" class="icon-btn" data-close-modal data-i18n-aria="close">✕</button>
         </header>
         <form id="entry-form" autocomplete="off">
           <input type="hidden" id="entry-id" />
           <label class="field">
-            <span>Nazwa usługi *</span>
-            <input type="text" id="f-service" required maxlength="120" placeholder="np. Gmail, Allegro" />
+            <span data-i18n="service"></span>
+            <input type="text" id="f-service" required maxlength="120" data-i18n-placeholder="servicePlaceholder" />
           </label>
           <label class="field">
-            <span>E-mail logowania</span>
-            <input type="email" id="f-email" maxlength="200" placeholder="login@example.com" />
+            <span data-i18n="email"></span>
+            <input type="email" id="f-email" maxlength="200" data-i18n-placeholder="emailPlaceholder" />
           </label>
           <label class="field">
-            <span>Telefon logowania</span>
-            <input type="tel" id="f-phone" maxlength="40" placeholder="+48 …" />
+            <span data-i18n="phone"></span>
+            <input type="tel" id="f-phone" maxlength="40" data-i18n-placeholder="phonePlaceholder" />
           </label>
           <label class="field">
-            <span>Hasło</span>
+            <span data-i18n="password"></span>
             <div class="pw-row">
-              <input type="password" id="f-password" maxlength="256" placeholder="opcjonalne" autocomplete="off" />
-              <button type="button" class="icon-btn" data-toggle-pw="#f-password" aria-label="Pokaż/ukryj">👁</button>
+              <input type="password" id="f-password" maxlength="256" data-i18n-placeholder="passwordOptional" autocomplete="off" />
+              <button type="button" class="icon-btn" data-toggle-pw="#f-password" data-i18n-aria="authTogglePw">👁</button>
             </div>
           </label>
           <label class="field">
-            <span>URL</span>
-            <input type="url" id="f-url" maxlength="500" placeholder="https://" />
+            <span data-i18n="url"></span>
+            <input type="url" id="f-url" maxlength="500" data-i18n-placeholder="urlPlaceholder" />
           </label>
           <label class="field">
-            <span>Tag projektu</span>
-            <input type="text" id="f-tag" maxlength="60" placeholder="np. praca, prywatne" />
+            <span data-i18n="tag"></span>
+            <input type="text" id="f-tag" maxlength="60" data-i18n-placeholder="tagPlaceholder" />
           </label>
           <label class="field check">
             <input type="checkbox" id="f-google" />
-            <span>Login with Google</span>
+            <span data-i18n="googleSignIn"></span>
           </label>
           <label class="field">
-            <span>Notatki</span>
-            <textarea id="f-notes" rows="3" maxlength="2000" placeholder="Dodatkowe info…"></textarea>
+            <span data-i18n="notes"></span>
+            <textarea id="f-notes" rows="3" maxlength="2000" data-i18n-placeholder="notesPlaceholder"></textarea>
           </label>
           <div class="modal-actions">
-            <button type="button" class="btn danger ghost" id="btn-delete" hidden>Usuń</button>
-            <button type="button" class="btn ghost" data-close-modal>Anuluj</button>
-            <button type="submit" class="btn primary">Zapisz</button>
+            <button type="button" class="btn danger ghost" id="btn-delete" hidden data-i18n="delete"></button>
+            <button type="button" class="btn ghost" data-close-modal data-i18n="cancel"></button>
+            <button type="submit" class="btn primary" data-i18n="save"></button>
           </div>
         </form>
       </div>
     </div>
 
+    <div id="lang-popover" class="lang-popover" hidden role="listbox"></div>
     <input type="file" id="import-file" accept="application/json,.json" hidden />
     <div id="toast" class="toast" hidden role="status"></div>
   </div>
